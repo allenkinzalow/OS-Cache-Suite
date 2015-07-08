@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/OS Cache Suiteh.iml" filepath="$PROJECT_DIR$/OS Cache Suiteh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../OSRS Client/OSRS Client.iml" filepath="$PROJECT_DIR$/../OSRS Client/OSRS Client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../OSRS Server/OSRS Server.iml" filepath="$PROJECT_DIR$/../OSRS Server/OSRS Server.iml" />
+    </modules>
+  </component>
+</project>

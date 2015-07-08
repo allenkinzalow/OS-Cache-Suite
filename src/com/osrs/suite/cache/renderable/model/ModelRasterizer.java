@@ -1,0 +1,1392 @@
+package com.osrs.suite.cache.renderable.model;
+
+import com.osrs.suite.cache.AnimationSkeleton;
+import com.osrs.suite.cache.AnimationSkeletonSet;
+import com.osrs.suite.cache.AnimationSkin;
+import com.osrs.suite.cache.renderable.Rasterizer3D;
+
+/**
+ * Created by Allen Kinzalow on 3/16/2015.
+ */
+public class ModelRasterizer {
+
+    public int modelHeight = 1000;
+    static int[] anIntArray2431 = new int[10];
+    int[] vertexXCoordinate;
+    static int vertexYModifier;
+    int anInt2434 = 0;
+    int vertexCoordinateCount = 0;
+    int anInt2436;
+    int[] vertexYCoordinate;
+    int[] vertexZCoordinate;
+    int[][] anIntArrayArray2439;
+    int[] trianglePointsX;
+    int[] trianglePointsY;
+    int[] trianglePointsZ;
+    static int[][] anIntArrayArray2443 = new int[1600][512];
+    int[] anIntArray2444;
+    int[] anIntArray2445;
+    byte[] faceRenderPriorities;
+    byte[] triangleAlphaValues;
+    static int[] projectedVertexX = new int[4096];
+    static int[] anIntArray2449 = new int[2000];
+    byte aByte2450 = 0;
+    byte[] aByteArray2451;
+    static byte[] aByteArray2452 = new byte[1];
+    int[] anIntArray2453;
+    int[] anIntArray2454;
+    int[][] anIntArrayArray2456;
+    public boolean aBool2457 = false;
+    int triangleFaceCount = 0;
+    int anInt2459;
+    int anInt2460;
+    int anInt2461;
+    int[] anIntArray2462;
+    static boolean[] aBoolArray2464 = new boolean[4096];
+    static boolean[] aBoolArray2465 = new boolean[4096];
+    int anInt2466;
+    static int[] projectedVertexY = new int[4096];
+    static int[] projectedVertexZ = new int[4096];
+    static int[] cameraVertexX = new int[4096];
+    static int[] cameraVertexY = new int[4096];
+    static int[] cameraVertexZ = new int[4096];
+    static int[] anIntArray2473 = Rasterizer3D.rgbTable;
+    static int[] anIntArray2474 = new int[1600];
+    static int[] anIntArray2475 = new int[12];
+    static int[][] anIntArrayArray2476 = new int[12][2000];
+    static byte[] aByteArray2477 = new byte[1];
+    static int[] anIntArray2478 = new int[2000];
+    static int[] anIntArray2479 = new int[12];
+    static int[] anIntArray2480 = new int[10];
+    short[] vertexTextures;
+    static int[] anIntArray2482 = new int[10];
+    static int vertexXModifier;
+    static ModelRasterizer aClass108_Sub20_Sub14_Sub3_2484 = new ModelRasterizer();
+    static int vertexZModifier;
+    public static boolean aBool2486 = false;
+    public static int anInt2487 = 0;
+    public static int anInt2488 = 0;
+    int[] anIntArray2489;
+    public static int anInt2490 = 0;
+    static int[] SINE = Rasterizer3D.SINE;
+    static int[] COSINE = Rasterizer3D.COSINE;
+    static int[] anIntArray2494 = Rasterizer3D.anIntArray2520;
+    public static int[] anIntArray2495 = new int[1000];
+    static ModelRasterizer aClass108_Sub20_Sub14_Sub3_2496 = new ModelRasterizer();
+
+
+    public ModelRasterizer method2852(boolean var1) {
+        if(!var1 && aByteArray2477.length < this.triangleFaceCount) {
+            aByteArray2477 = new byte[this.triangleFaceCount + 100];
+        }
+
+        return this.method2854(var1, aClass108_Sub20_Sub14_Sub3_2484, aByteArray2477);
+    }
+
+    ModelRasterizer method2854(boolean var1, ModelRasterizer var2, byte[] var3) {
+        var2.vertexCoordinateCount = this.vertexCoordinateCount;
+        var2.triangleFaceCount = this.triangleFaceCount;
+        var2.anInt2434 = this.anInt2434;
+        if(var2.vertexXCoordinate == null || var2.vertexXCoordinate.length < this.vertexCoordinateCount) {
+            var2.vertexXCoordinate = new int[this.vertexCoordinateCount + 100];
+            var2.vertexYCoordinate = new int[this.vertexCoordinateCount + 100];
+            var2.vertexZCoordinate = new int[this.vertexCoordinateCount + 100];
+        }
+
+        int var4;
+        for(var4 = 0; var4 < this.vertexCoordinateCount; ++var4) {
+            var2.vertexXCoordinate[var4] = this.vertexXCoordinate[var4];
+            var2.vertexYCoordinate[var4] = this.vertexYCoordinate[var4];
+            var2.vertexZCoordinate[var4] = this.vertexZCoordinate[var4];
+        }
+
+        if(var1) {
+            var2.triangleAlphaValues = this.triangleAlphaValues;
+        } else {
+            var2.triangleAlphaValues = var3;
+            if(this.triangleAlphaValues == null) {
+                for(var4 = 0; var4 < this.triangleFaceCount; ++var4) {
+                    var2.triangleAlphaValues[var4] = 0;
+                }
+            } else {
+                for(var4 = 0; var4 < this.triangleFaceCount; ++var4) {
+                    var2.triangleAlphaValues[var4] = this.triangleAlphaValues[var4];
+                }
+            }
+        }
+
+        var2.trianglePointsX = this.trianglePointsX;
+        var2.trianglePointsY = this.trianglePointsY;
+        var2.trianglePointsZ = this.trianglePointsZ;
+        var2.anIntArray2445 = this.anIntArray2445;
+        var2.anIntArray2444 = this.anIntArray2444;
+        var2.anIntArray2489 = this.anIntArray2489;
+        var2.faceRenderPriorities = this.faceRenderPriorities;
+        var2.aByteArray2451 = this.aByteArray2451;
+        var2.vertexTextures = this.vertexTextures;
+        var2.aByte2450 = this.aByte2450;
+        var2.anIntArray2462 = this.anIntArray2462;
+        var2.anIntArray2453 = this.anIntArray2453;
+        var2.anIntArray2454 = this.anIntArray2454;
+        var2.anIntArrayArray2439 = this.anIntArrayArray2439;
+        var2.anIntArrayArray2456 = this.anIntArrayArray2456;
+        var2.aBool2457 = this.aBool2457;
+        var2.anInt2466 = 0;
+        return var2;
+    }
+
+    public void method2855() {
+        if(this.anInt2466 != 1) {
+            this.anInt2466 = 1;
+            this.modelHeight = 0;
+            this.anInt2459 = 0;
+            this.anInt2460 = 0;
+
+            for(int var1 = 0; var1 < this.vertexCoordinateCount; ++var1) {
+                int var4 = this.vertexXCoordinate[var1];
+                int var3 = this.vertexYCoordinate[var1];
+                int var2 = this.vertexZCoordinate[var1];
+                if(-var3 > this.modelHeight) {
+                    this.modelHeight = -var3;
+                }
+
+                if(var3 > this.anInt2459) {
+                    this.anInt2459 = var3;
+                }
+
+                int var5 = var4 * var4 + var2 * var2;
+                if(var5 > this.anInt2460) {
+                    this.anInt2460 = var5;
+                }
+            }
+
+            this.anInt2460 = (int)(Math.sqrt((double)this.anInt2460) + 0.99D);
+            this.anInt2436 = (int)(Math.sqrt((double)(this.anInt2460 * this.anInt2460 + this.modelHeight * this.modelHeight)) + 0.99D);
+            this.anInt2461 = this.anInt2436 + (int)(Math.sqrt((double)(this.anInt2460 * this.anInt2460 + this.anInt2459 * this.anInt2459)) + 0.99D);
+        }
+    }
+
+    void method2856() {
+        if(this.anInt2466 != 2) {
+            this.anInt2466 = 2;
+            this.anInt2460 = 0;
+
+            for(int var1 = 0; var1 < this.vertexCoordinateCount; ++var1) {
+                int var3 = this.vertexXCoordinate[var1];
+                int var2 = this.vertexYCoordinate[var1];
+                int var4 = this.vertexZCoordinate[var1];
+                int var5 = var3 * var3 + var4 * var4 + var2 * var2;
+                if(var5 > this.anInt2460) {
+                    this.anInt2460 = var5;
+                }
+            }
+
+            this.anInt2460 = (int)(Math.sqrt((double)this.anInt2460) + 0.99D);
+            this.anInt2436 = this.anInt2460;
+            this.anInt2461 = this.anInt2460 + this.anInt2460;
+        }
+    }
+
+    public int method2857() {
+        this.method2855();
+        return this.anInt2460;
+    }
+
+    public void applyTransform(AnimationSkeletonSet animSet, int frame) {
+        if(this.anIntArrayArray2439 != null) {
+            if(frame != -1) {
+                AnimationSkeleton animation = animSet.animationSkeletons[frame];
+                AnimationSkin skins = animation.skin;
+                vertexXModifier = 0;
+                vertexYModifier = 0;
+                vertexZModifier = 0;
+
+                for(int step = 0; step < animation.stepCount; ++step) {
+                    int opcode = animation.opCodeTable[step];
+                    this.transformStep(skins.transformationTypes[opcode], skins.skinList[opcode], animation.translator_x[step], animation.translator_y[step], animation.translator_z[step]);
+                }
+
+                this.anInt2466 = 0;
+            }
+        }
+    }
+
+    public void method2859(AnimationSkeletonSet var1, int var2, AnimationSkeletonSet var3, int var4, int[] var5) {
+        if(var2 != -1) {
+            if(var5 != null && var4 != -1) {
+                AnimationSkeleton var6 = var1.animationSkeletons[var2];
+                AnimationSkeleton var10 = var3.animationSkeletons[var4];
+                AnimationSkin var7 = var6.skin;
+                vertexXModifier = 0;
+                vertexYModifier = 0;
+                vertexZModifier = 0;
+                byte var11 = 0;
+                int var13 = var11 + 1;
+                int var9 = var5[var11];
+
+                int var8;
+                int var12;
+                for(var12 = 0; var12 < var6.stepCount; ++var12) {
+                    for(var8 = var6.opCodeTable[var12]; var8 > var9; var9 = var5[var13++]) {
+                        ;
+                    }
+
+                    if(var8 != var9 || var7.transformationTypes[var8] == 0) {
+                        this.transformStep(var7.transformationTypes[var8], var7.skinList[var8], var6.translator_x[var12], var6.translator_y[var12], var6.translator_z[var12]);
+                    }
+                }
+
+                vertexXModifier = 0;
+                vertexYModifier = 0;
+                vertexZModifier = 0;
+                var11 = 0;
+                var13 = var11 + 1;
+                var9 = var5[var11];
+
+                for(var12 = 0; var12 < var10.stepCount; ++var12) {
+                    for(var8 = var10.opCodeTable[var12]; var8 > var9; var9 = var5[var13++]) {
+                        ;
+                    }
+
+                    if(var8 == var9 || var7.transformationTypes[var8] == 0) {
+                        this.transformStep(var7.transformationTypes[var8], var7.skinList[var8], var10.translator_x[var12], var10.translator_y[var12], var10.translator_z[var12]);
+                    }
+                }
+
+                this.anInt2466 = 0;
+            } else {
+                this.applyTransform(var1, var2);
+            }
+        }
+    }
+
+    void transformStep(int transformType, int[] skinList, int xTranslate, int yTranslate, int zTranslate) {
+        int skinCount = skinList.length;
+        int var8;
+        int var10;
+        int var11;
+        int var12;
+        if(transformType == 0) { // set reference point
+            var8 = 0;
+            vertexXModifier = 0;
+            vertexYModifier = 0;
+            vertexZModifier = 0;
+
+            for(var11 = 0; var11 < skinCount; ++var11) {
+                int var19 = skinList[var11];
+                if(var19 < this.anIntArrayArray2439.length) {
+                    int[] var18 = this.anIntArrayArray2439[var19];
+
+                    for(var10 = 0; var10 < var18.length; ++var10) {
+                        var12 = var18[var10];
+                        vertexXModifier += this.vertexXCoordinate[var12];
+                        vertexYModifier += this.vertexYCoordinate[var12];
+                        vertexZModifier += this.vertexZCoordinate[var12];
+                        ++var8;
+                    }
+                }
+            }
+
+            if(var8 > 0) {
+                vertexXModifier = vertexXModifier / var8 + xTranslate;
+                vertexYModifier = vertexYModifier / var8 + yTranslate;
+                vertexZModifier = vertexZModifier / var8 + zTranslate;
+            } else {
+                vertexXModifier = xTranslate;
+                vertexYModifier = yTranslate;
+                vertexZModifier = zTranslate;
+            }
+        } else {
+            int var7;
+            int[] var9;
+            if(transformType == 1) { // translation
+                for(var8 = 0; var8 < skinCount; ++var8) {
+                    var11 = skinList[var8];
+                    if(var11 < this.anIntArrayArray2439.length) {
+                        var9 = this.anIntArrayArray2439[var11];
+
+                        for(var7 = 0; var7 < var9.length; ++var7) {
+                            var10 = var9[var7];
+                            this.vertexXCoordinate[var10] += xTranslate;
+                            this.vertexYCoordinate[var10] += yTranslate;
+                            this.vertexZCoordinate[var10] += zTranslate;
+                        }
+                    }
+                }
+
+            } else if(transformType == 2) { // rotation
+                for(var8 = 0; var8 < skinCount; ++var8) {
+                    var11 = skinList[var8];
+                    if(var11 < this.anIntArrayArray2439.length) {
+                        var9 = this.anIntArrayArray2439[var11];
+
+                        for(var7 = 0; var7 < var9.length; ++var7) {
+                            var10 = var9[var7];
+                            this.vertexXCoordinate[var10] -= vertexXModifier;
+                            this.vertexYCoordinate[var10] -= vertexYModifier;
+                            this.vertexZCoordinate[var10] -= vertexZModifier;
+                            var12 = (xTranslate & 255) * 8;
+                            int var16 = (yTranslate & 255) * 8;
+                            int var13 = (zTranslate & 255) * 8;
+                            int var14;
+                            int var15;
+                            int var17;
+                            if(var13 != 0) {
+                                var14 = SINE[var13];
+                                var15 = COSINE[var13];
+                                var17 = this.vertexYCoordinate[var10] * var14 + this.vertexXCoordinate[var10] * var15 >> 16;
+                                this.vertexYCoordinate[var10] = this.vertexYCoordinate[var10] * var15 - this.vertexXCoordinate[var10] * var14 >> 16;
+                                this.vertexXCoordinate[var10] = var17;
+                            }
+
+                            if(var12 != 0) {
+                                var14 = SINE[var12];
+                                var15 = COSINE[var12];
+                                var17 = this.vertexYCoordinate[var10] * var15 - this.vertexZCoordinate[var10] * var14 >> 16;
+                                this.vertexZCoordinate[var10] = this.vertexYCoordinate[var10] * var14 + this.vertexZCoordinate[var10] * var15 >> 16;
+                                this.vertexYCoordinate[var10] = var17;
+                            }
+
+                            if(var16 != 0) {
+                                var14 = SINE[var16];
+                                var15 = COSINE[var16];
+                                var17 = this.vertexZCoordinate[var10] * var14 + this.vertexXCoordinate[var10] * var15 >> 16;
+                                this.vertexZCoordinate[var10] = this.vertexZCoordinate[var10] * var15 - this.vertexXCoordinate[var10] * var14 >> 16;
+                                this.vertexXCoordinate[var10] = var17;
+                            }
+
+                            this.vertexXCoordinate[var10] += vertexXModifier;
+                            this.vertexYCoordinate[var10] += vertexYModifier;
+                            this.vertexZCoordinate[var10] += vertexZModifier;
+                        }
+                    }
+                }
+
+            } else if(transformType == 3) { // scale
+                for(var8 = 0; var8 < skinCount; ++var8) {
+                    var11 = skinList[var8];
+                    if(var11 < this.anIntArrayArray2439.length) {
+                        var9 = this.anIntArrayArray2439[var11];
+
+                        for(var7 = 0; var7 < var9.length; ++var7) {
+                            var10 = var9[var7];
+                            this.vertexXCoordinate[var10] -= vertexXModifier;
+                            this.vertexYCoordinate[var10] -= vertexYModifier;
+                            this.vertexZCoordinate[var10] -= vertexZModifier;
+                            this.vertexXCoordinate[var10] = this.vertexXCoordinate[var10] * xTranslate / 128;
+                            this.vertexYCoordinate[var10] = this.vertexYCoordinate[var10] * yTranslate / 128;
+                            this.vertexZCoordinate[var10] = this.vertexZCoordinate[var10] * zTranslate / 128;
+                            this.vertexXCoordinate[var10] += vertexXModifier;
+                            this.vertexYCoordinate[var10] += vertexYModifier;
+                            this.vertexZCoordinate[var10] += vertexZModifier;
+                        }
+                    }
+                }
+
+            } else if(transformType == 5) { // make alpha
+                if(this.anIntArrayArray2456 != null) {
+                    if(this.triangleAlphaValues != null) {
+                        for(var8 = 0; var8 < skinCount; ++var8) {
+                            var11 = skinList[var8];
+                            if(var11 < this.anIntArrayArray2456.length) {
+                                var9 = this.anIntArrayArray2456[var11];
+
+                                for(var7 = 0; var7 < var9.length; ++var7) {
+                                    var10 = var9[var7];
+                                    var12 = (this.triangleAlphaValues[var10] & 255) + xTranslate * 8;
+                                    if(var12 < 0) {
+                                        var12 = 0;
+                                    } else if(var12 > 255) {
+                                        var12 = 255;
+                                    }
+
+                                    this.triangleAlphaValues[var10] = (byte)var12;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    public void method2862() {
+        for(int var1 = 0; var1 < this.vertexCoordinateCount; ++var1) {
+            this.vertexXCoordinate[var1] = -this.vertexXCoordinate[var1];
+            this.vertexZCoordinate[var1] = -this.vertexZCoordinate[var1];
+        }
+
+        this.anInt2466 = 0;
+    }
+
+    public void method2863() {
+        for(int var1 = 0; var1 < this.vertexCoordinateCount; ++var1) {
+            int var2 = this.vertexZCoordinate[var1];
+            this.vertexZCoordinate[var1] = this.vertexXCoordinate[var1];
+            this.vertexXCoordinate[var1] = -var2;
+        }
+
+        this.anInt2466 = 0;
+    }
+
+    public void rotateX(int var1) {
+        int var2 = SINE[var1];
+        int var4 = COSINE[var1];
+
+        for(int var3 = 0; var3 < this.vertexCoordinateCount; ++var3) {
+            int var5 = this.vertexYCoordinate[var3] * var4 - this.vertexZCoordinate[var3] * var2 >> 16;
+            this.vertexZCoordinate[var3] = this.vertexYCoordinate[var3] * var2 + this.vertexZCoordinate[var3] * var4 >> 16;
+            this.vertexYCoordinate[var3] = var5;
+        }
+
+        this.anInt2466 = 0;
+    }
+
+    public void offsetModelVertices(int xOffset, int yOffset, int zOffset) {
+        for(int vertexIndex = 0; vertexIndex < this.vertexCoordinateCount; ++vertexIndex) {
+            this.vertexXCoordinate[vertexIndex] += xOffset;
+            this.vertexYCoordinate[vertexIndex] += yOffset;
+            this.vertexZCoordinate[vertexIndex] += zOffset;
+        }
+
+        this.anInt2466 = 0;
+    }
+
+    public void resizeModel(int xSize, int ySize, int zSize) {
+        for(int var4 = 0; var4 < this.vertexCoordinateCount; ++var4) {
+            this.vertexXCoordinate[var4] = this.vertexXCoordinate[var4] * xSize / 128;
+            this.vertexYCoordinate[var4] = this.vertexYCoordinate[var4] * ySize / 128;
+            this.vertexZCoordinate[var4] = this.vertexZCoordinate[var4] * zSize / 128;
+        }
+
+        this.anInt2466 = 0;
+    }
+
+    final void method2867(int var1) {
+        int var2 = Rasterizer3D.centerX;
+        int var19 = Rasterizer3D.centerY;
+        int var3 = 0;
+        int var4 = this.trianglePointsX[var1];
+        int var5 = this.trianglePointsY[var1];
+        int var6 = this.trianglePointsZ[var1];
+        int var16 = cameraVertexZ[var4];
+        int var17 = cameraVertexZ[var5];
+        int var18 = cameraVertexZ[var6];
+        if(this.triangleAlphaValues == null) {
+            Rasterizer3D.alpha = 0;
+        } else {
+            Rasterizer3D.alpha = this.triangleAlphaValues[var1] & 255;
+        }
+
+        int var7;
+        int var10;
+        int var11;
+        int var12;
+        if(var16 >= 50) {
+            anIntArray2480[var3] = projectedVertexX[var4];
+            anIntArray2431[var3] = projectedVertexY[var4];
+            anIntArray2482[var3++] = this.anIntArray2445[var1];
+        } else {
+            var10 = cameraVertexX[var4];
+            var11 = cameraVertexY[var4];
+            var12 = this.anIntArray2445[var1];
+            if(var18 >= 50) {
+                var7 = (50 - var16) * anIntArray2494[var18 - var16];
+                anIntArray2480[var3] = var2 + (var10 + ((cameraVertexX[var6] - var10) * var7 >> 16) << 9) / 50;
+                anIntArray2431[var3] = var19 + (var11 + ((cameraVertexY[var6] - var11) * var7 >> 16) << 9) / 50;
+                anIntArray2482[var3++] = var12 + ((this.anIntArray2489[var1] - var12) * var7 >> 16);
+            }
+
+            if(var17 >= 50) {
+                var7 = (50 - var16) * anIntArray2494[var17 - var16];
+                anIntArray2480[var3] = var2 + (var10 + ((cameraVertexX[var5] - var10) * var7 >> 16) << 9) / 50;
+                anIntArray2431[var3] = var19 + (var11 + ((cameraVertexY[var5] - var11) * var7 >> 16) << 9) / 50;
+                anIntArray2482[var3++] = var12 + ((this.anIntArray2444[var1] - var12) * var7 >> 16);
+            }
+        }
+
+        if(var17 >= 50) {
+            anIntArray2480[var3] = projectedVertexX[var5];
+            anIntArray2431[var3] = projectedVertexY[var5];
+            anIntArray2482[var3++] = this.anIntArray2444[var1];
+        } else {
+            var10 = cameraVertexX[var5];
+            var11 = cameraVertexY[var5];
+            var12 = this.anIntArray2444[var1];
+            if(var16 >= 50) {
+                var7 = (50 - var17) * anIntArray2494[var16 - var17];
+                anIntArray2480[var3] = var2 + (var10 + ((cameraVertexX[var4] - var10) * var7 >> 16) << 9) / 50;
+                anIntArray2431[var3] = var19 + (var11 + ((cameraVertexY[var4] - var11) * var7 >> 16) << 9) / 50;
+                anIntArray2482[var3++] = var12 + ((this.anIntArray2445[var1] - var12) * var7 >> 16);
+            }
+
+            if(var18 >= 50) {
+                var7 = (50 - var17) * anIntArray2494[var18 - var17];
+                anIntArray2480[var3] = var2 + (var10 + ((cameraVertexX[var6] - var10) * var7 >> 16) << 9) / 50;
+                anIntArray2431[var3] = var19 + (var11 + ((cameraVertexY[var6] - var11) * var7 >> 16) << 9) / 50;
+                anIntArray2482[var3++] = var12 + ((this.anIntArray2489[var1] - var12) * var7 >> 16);
+            }
+        }
+
+        if(var18 >= 50) {
+            anIntArray2480[var3] = projectedVertexX[var6];
+            anIntArray2431[var3] = projectedVertexY[var6];
+            anIntArray2482[var3++] = this.anIntArray2489[var1];
+        } else {
+            var10 = cameraVertexX[var6];
+            var11 = cameraVertexY[var6];
+            var12 = this.anIntArray2489[var1];
+            if(var17 >= 50) {
+                var7 = (50 - var18) * anIntArray2494[var17 - var18];
+                anIntArray2480[var3] = var2 + (var10 + ((cameraVertexX[var5] - var10) * var7 >> 16) << 9) / 50;
+                anIntArray2431[var3] = var19 + (var11 + ((cameraVertexY[var5] - var11) * var7 >> 16) << 9) / 50;
+                anIntArray2482[var3++] = var12 + ((this.anIntArray2444[var1] - var12) * var7 >> 16);
+            }
+
+            if(var16 >= 50) {
+                var7 = (50 - var18) * anIntArray2494[var16 - var18];
+                anIntArray2480[var3] = var2 + (var10 + ((cameraVertexX[var4] - var10) * var7 >> 16) << 9) / 50;
+                anIntArray2431[var3] = var19 + (var11 + ((cameraVertexY[var4] - var11) * var7 >> 16) << 9) / 50;
+                anIntArray2482[var3++] = var12 + ((this.anIntArray2445[var1] - var12) * var7 >> 16);
+            }
+        }
+
+        var10 = anIntArray2480[0];
+        var11 = anIntArray2480[1];
+        var12 = anIntArray2480[2];
+        var7 = anIntArray2431[0];
+        int var8 = anIntArray2431[1];
+        int var9 = anIntArray2431[2];
+        Rasterizer3D.restrictEdges = false;
+        int var13;
+        int var14;
+        int var15;
+        int var20;
+        if(var3 == 3) {
+            if(var10 < 0 || var11 < 0 || var12 < 0 || var10 > Rasterizer3D.anInt2502 || var11 > Rasterizer3D.anInt2502 || var12 > Rasterizer3D.anInt2502) {
+                Rasterizer3D.restrictEdges = true;
+            }
+
+            if(this.vertexTextures != null && this.vertexTextures[var1] != -1) {
+                if(this.aByteArray2451 != null && this.aByteArray2451[var1] != -1) {
+                    var20 = this.aByteArray2451[var1] & 255;
+                    var13 = this.anIntArray2462[var20];
+                    var14 = this.anIntArray2453[var20];
+                    var15 = this.anIntArray2454[var20];
+                } else {
+                    var13 = var4;
+                    var14 = var5;
+                    var15 = var6;
+                }
+
+                if(this.anIntArray2489[var1] == -1) {
+                    Rasterizer3D.drawTexturedTriangle(var7, var8, var9, var10, var11, var12, this.anIntArray2445[var1], this.anIntArray2445[var1], this.anIntArray2445[var1], cameraVertexX[var13], cameraVertexX[var14], cameraVertexX[var15], cameraVertexY[var13], cameraVertexY[var14], cameraVertexY[var15], cameraVertexZ[var13], cameraVertexZ[var14], cameraVertexZ[var15], this.vertexTextures[var1]);
+                } else {
+                    Rasterizer3D.drawTexturedTriangle(var7, var8, var9, var10, var11, var12, anIntArray2482[0], anIntArray2482[1], anIntArray2482[2], cameraVertexX[var13], cameraVertexX[var14], cameraVertexX[var15], cameraVertexY[var13], cameraVertexY[var14], cameraVertexY[var15], cameraVertexZ[var13], cameraVertexZ[var14], cameraVertexZ[var15], this.vertexTextures[var1]);
+                }
+            } else if(this.anIntArray2489[var1] == -1) {
+                Rasterizer3D.drawFlatTriangle(var7, var8, var9, var10, var11, var12, anIntArray2473[this.anIntArray2445[var1]]);
+            } else {
+                Rasterizer3D.drawShadedTriangle(var7, var8, var9, var10, var11, var12, anIntArray2482[0], anIntArray2482[1], anIntArray2482[2]);
+            }
+        }
+
+        if(var3 == 4) {
+            if(var10 < 0 || var11 < 0 || var12 < 0 || var10 > Rasterizer3D.anInt2502 || var11 > Rasterizer3D.anInt2502 || var12 > Rasterizer3D.anInt2502 || anIntArray2480[3] < 0 || anIntArray2480[3] > Rasterizer3D.anInt2502) {
+                Rasterizer3D.restrictEdges = true;
+            }
+
+            if(this.vertexTextures != null && this.vertexTextures[var1] != -1) {
+                if(this.aByteArray2451 != null && this.aByteArray2451[var1] != -1) {
+                    var20 = this.aByteArray2451[var1] & 255;
+                    var13 = this.anIntArray2462[var20];
+                    var14 = this.anIntArray2453[var20];
+                    var15 = this.anIntArray2454[var20];
+                } else {
+                    var13 = var4;
+                    var14 = var5;
+                    var15 = var6;
+                }
+
+                short var21 = this.vertexTextures[var1];
+                if(this.anIntArray2489[var1] == -1) {
+                    Rasterizer3D.drawTexturedTriangle(var7, var8, var9, var10, var11, var12, this.anIntArray2445[var1], this.anIntArray2445[var1], this.anIntArray2445[var1], cameraVertexX[var13], cameraVertexX[var14], cameraVertexX[var15], cameraVertexY[var13], cameraVertexY[var14], cameraVertexY[var15], cameraVertexZ[var13], cameraVertexZ[var14], cameraVertexZ[var15], var21);
+                    Rasterizer3D.drawTexturedTriangle(var7, var9, anIntArray2431[3], var10, var12, anIntArray2480[3], this.anIntArray2445[var1], this.anIntArray2445[var1], this.anIntArray2445[var1], cameraVertexX[var13], cameraVertexX[var14], cameraVertexX[var15], cameraVertexY[var13], cameraVertexY[var14], cameraVertexY[var15], cameraVertexZ[var13], cameraVertexZ[var14], cameraVertexZ[var15], var21);
+                } else {
+                    Rasterizer3D.drawTexturedTriangle(var7, var8, var9, var10, var11, var12, anIntArray2482[0], anIntArray2482[1], anIntArray2482[2], cameraVertexX[var13], cameraVertexX[var14], cameraVertexX[var15], cameraVertexY[var13], cameraVertexY[var14], cameraVertexY[var15], cameraVertexZ[var13], cameraVertexZ[var14], cameraVertexZ[var15], var21);
+                    Rasterizer3D.drawTexturedTriangle(var7, var9, anIntArray2431[3], var10, var12, anIntArray2480[3], anIntArray2482[0], anIntArray2482[2], anIntArray2482[3], cameraVertexX[var13], cameraVertexX[var14], cameraVertexX[var15], cameraVertexY[var13], cameraVertexY[var14], cameraVertexY[var15], cameraVertexZ[var13], cameraVertexZ[var14], cameraVertexZ[var15], var21);
+                }
+            } else if(this.anIntArray2489[var1] == -1) {
+                var13 = anIntArray2473[this.anIntArray2445[var1]];
+                Rasterizer3D.drawFlatTriangle(var7, var8, var9, var10, var11, var12, var13);
+                Rasterizer3D.drawFlatTriangle(var7, var9, anIntArray2431[3], var10, var12, anIntArray2480[3], var13);
+            } else {
+                Rasterizer3D.drawShadedTriangle(var7, var8, var9, var10, var11, var12, anIntArray2482[0], anIntArray2482[1], anIntArray2482[2]);
+                Rasterizer3D.drawShadedTriangle(var7, var9, anIntArray2431[3], var10, var12, anIntArray2480[3], anIntArray2482[0], anIntArray2482[2], anIntArray2482[3]);
+            }
+        }
+    }
+
+    public final void renderSingle(int var1, int angleY, int var3, int angleX, int var5, int zoomSine, int zoomCosine, int var8) {
+        anIntArray2474[0] = -1;
+        if(this.anInt2466 != 2 && this.anInt2466 != 1) {
+            this.method2856();
+        }
+
+        int baseDrawX = Rasterizer3D.centerX;
+        int baseDrawY = Rasterizer3D.centerY;
+        int var11 = SINE[var1];
+        int var12 = COSINE[var1];
+        int var13 = SINE[angleY];
+        int var14 = COSINE[angleY];
+        int var15 = SINE[var3];
+        int var16 = COSINE[var3];
+        int rotSine_1 = SINE[angleX];
+        int rotCosine_1 = COSINE[angleX];
+        int zoom = zoomSine * rotSine_1 + zoomCosine * rotCosine_1 >> 16;
+
+        for(int vertex = 0; vertex < this.vertexCoordinateCount; ++vertex) {
+            int baseVertexX = this.vertexXCoordinate[vertex];
+            int baseVertexY = this.vertexYCoordinate[vertex];
+            int baseVertexZ = this.vertexZCoordinate[vertex];
+            int calculatedVertex;
+            if(var3 != 0) {
+                calculatedVertex = baseVertexY * var15 + baseVertexX * var16 >> 16;
+                baseVertexY = baseVertexY * var16 - baseVertexX * var15 >> 16;
+                baseVertexX = calculatedVertex;
+            }
+
+            if(var1 != 0) {
+                calculatedVertex = baseVertexY * var12 - baseVertexZ * var11 >> 16;
+                baseVertexZ = baseVertexY * var11 + baseVertexZ * var12 >> 16;
+                baseVertexY = calculatedVertex;
+            }
+
+            if(angleY != 0) {
+                calculatedVertex = baseVertexZ * var13 + baseVertexX * var14 >> 16;
+                baseVertexZ = baseVertexZ * var14 - baseVertexX * var13 >> 16;
+                baseVertexX = calculatedVertex;
+            }
+
+            baseVertexX += var5;
+            baseVertexY += zoomSine;
+            baseVertexZ += zoomCosine;
+            calculatedVertex = baseVertexY * rotCosine_1 - baseVertexZ * rotSine_1 >> 16;
+            baseVertexZ = baseVertexY * rotSine_1 + baseVertexZ * rotCosine_1 >> 16;
+            projectedVertexZ[vertex] = baseVertexZ - zoom;
+            projectedVertexX[vertex] = baseDrawX + (baseVertexX << 9) / var8;
+            projectedVertexY[vertex] = baseDrawY + (calculatedVertex << 9) / var8;
+            if(this.anInt2434 > 0) {
+                cameraVertexX[vertex] = baseVertexX;
+                cameraVertexY[vertex] = calculatedVertex;
+                cameraVertexZ[vertex] = baseVertexZ;
+            }
+        }
+
+        try {
+            this.translateToScreen(false, false, 0);
+        } catch (Exception var25) {
+            ;
+        }
+    }
+
+    final void translateToScreen(boolean var1, boolean var2, int var3) {
+        if(this.anInt2461 < 1600) {
+            int var5;
+            for(var5 = 0; var5 < this.anInt2461; ++var5) {
+                anIntArray2474[var5] = 0;
+            }
+
+            int var4;
+            int var7;
+            int var11;
+            int var12;
+            int var13;
+            int var14;
+            int var15;
+            int var16;
+            int var19;
+            for(var5 = 0; var5 < this.triangleFaceCount; ++var5) {
+                if(this.anIntArray2489[var5] != -2) {
+                    var14 = this.trianglePointsX[var5];
+                    var13 = this.trianglePointsY[var5];
+                    var15 = this.trianglePointsZ[var5];
+                    var12 = projectedVertexX[var14];
+                    var11 = projectedVertexX[var13];
+                    var4 = projectedVertexX[var15];
+                    int var8;
+                    if(var1 && (var12 == -5000 || var11 == -5000 || var4 == -5000)) {
+                        var8 = cameraVertexX[var14];
+                        var16 = cameraVertexX[var13];
+                        var7 = cameraVertexX[var15];
+                        int var18 = cameraVertexY[var14];
+                        var19 = cameraVertexY[var13];
+                        int var20 = cameraVertexY[var15];
+                        int var6 = cameraVertexZ[var14];
+                        int var17 = cameraVertexZ[var13];
+                        int var9 = cameraVertexZ[var15];
+                        var8 -= var16;
+                        var7 -= var16;
+                        var18 -= var19;
+                        var20 -= var19;
+                        var6 -= var17;
+                        var9 -= var17;
+                        int var21 = var18 * var9 - var6 * var20;
+                        int var10 = var6 * var7 - var8 * var9;
+                        int var22 = var8 * var20 - var18 * var7;
+                        if(var16 * var21 + var19 * var10 + var17 * var22 > 0) {
+                            aBoolArray2465[var5] = true;
+                            int var23 = (projectedVertexZ[var14] + projectedVertexZ[var13] + projectedVertexZ[var15]) / 3 + this.anInt2436;
+                            anIntArrayArray2443[var23][anIntArray2474[var23]++] = var5;
+                        }
+                    } else {
+                        if(var2 && this.method2873(anInt2487, anInt2488, projectedVertexY[var14], projectedVertexY[var13], projectedVertexY[var15], var12, var11, var4)) {
+                            anIntArray2495[anInt2490++] = var3;
+                            var2 = false;
+                        }
+
+                        if((var12 - var11) * (projectedVertexY[var15] - projectedVertexY[var13]) - (projectedVertexY[var14] - projectedVertexY[var13]) * (var4 - var11) > 0) {
+                            aBoolArray2465[var5] = false;
+                            if(var12 >= 0 && var11 >= 0 && var4 >= 0 && var12 <= Rasterizer3D.anInt2502 && var11 <= Rasterizer3D.anInt2502 && var4 <= Rasterizer3D.anInt2502) {
+                                aBoolArray2464[var5] = false;
+                            } else {
+                                aBoolArray2464[var5] = true;
+                            }
+
+                            var8 = (projectedVertexZ[var14] + projectedVertexZ[var13] + projectedVertexZ[var15]) / 3 + this.anInt2436;
+                            anIntArrayArray2443[var8][anIntArray2474[var8]++] = var5;
+                        }
+                    }
+                }
+            }
+
+            int[] var27;
+            if(this.faceRenderPriorities == null) {
+                for(var5 = this.anInt2461 - 1; var5 >= 0; --var5) {
+                    var14 = anIntArray2474[var5];
+                    if(var14 > 0) {
+                        var27 = anIntArrayArray2443[var5];
+
+                        for(var15 = 0; var15 < var14; ++var15) {
+                            this.method2903(var27[var15]);
+                        }
+                    }
+                }
+
+            } else {
+                for(var5 = 0; var5 < 12; ++var5) {
+                    anIntArray2475[var5] = 0;
+                    anIntArray2479[var5] = 0;
+                }
+
+                for(var5 = this.anInt2461 - 1; var5 >= 0; --var5) {
+                    var14 = anIntArray2474[var5];
+                    if(var14 > 0) {
+                        var27 = anIntArrayArray2443[var5];
+
+                        for(var15 = 0; var15 < var14; ++var15) {
+                            var12 = var27[var15];
+                            byte var26 = this.faceRenderPriorities[var12];
+                            var4 = anIntArray2475[var26]++;
+                            anIntArrayArray2476[var26][var4] = var12;
+                            if(var26 < 10) {
+                                anIntArray2479[var26] += var5;
+                            } else if(var26 == 10) {
+                                anIntArray2449[var4] = var5;
+                            } else {
+                                anIntArray2478[var4] = var5;
+                            }
+                        }
+                    }
+                }
+
+                var5 = 0;
+                if(anIntArray2475[1] > 0 || anIntArray2475[2] > 0) {
+                    var5 = (anIntArray2479[1] + anIntArray2479[2]) / (anIntArray2475[1] + anIntArray2475[2]);
+                }
+
+                var14 = 0;
+                if(anIntArray2475[3] > 0 || anIntArray2475[4] > 0) {
+                    var14 = (anIntArray2479[3] + anIntArray2479[4]) / (anIntArray2475[3] + anIntArray2475[4]);
+                }
+
+                var13 = 0;
+                if(anIntArray2475[6] > 0 || anIntArray2475[8] > 0) {
+                    var13 = (anIntArray2479[6] + anIntArray2479[8]) / (anIntArray2475[6] + anIntArray2475[8]);
+                }
+
+                var12 = 0;
+                var11 = anIntArray2475[10];
+                int[] var24 = anIntArrayArray2476[10];
+                int[] var25 = anIntArray2449;
+                if(var12 == var11) {
+                    var12 = 0;
+                    var11 = anIntArray2475[11];
+                    var24 = anIntArrayArray2476[11];
+                    var25 = anIntArray2478;
+                }
+
+                if(var12 < var11) {
+                    var15 = var25[var12];
+                } else {
+                    var15 = -1000;
+                }
+
+                for(var16 = 0; var16 < 10; ++var16) {
+                    while(var16 == 0 && var15 > var5) {
+                        this.method2903(var24[var12++]);
+                        if(var12 == var11 && var24 != anIntArrayArray2476[11]) {
+                            var12 = 0;
+                            var11 = anIntArray2475[11];
+                            var24 = anIntArrayArray2476[11];
+                            var25 = anIntArray2478;
+                        }
+
+                        if(var12 < var11) {
+                            var15 = var25[var12];
+                        } else {
+                            var15 = -1000;
+                        }
+                    }
+
+                    while(var16 == 3 && var15 > var14) {
+                        this.method2903(var24[var12++]);
+                        if(var12 == var11 && var24 != anIntArrayArray2476[11]) {
+                            var12 = 0;
+                            var11 = anIntArray2475[11];
+                            var24 = anIntArrayArray2476[11];
+                            var25 = anIntArray2478;
+                        }
+
+                        if(var12 < var11) {
+                            var15 = var25[var12];
+                        } else {
+                            var15 = -1000;
+                        }
+                    }
+
+                    while(var16 == 5 && var15 > var13) {
+                        this.method2903(var24[var12++]);
+                        if(var12 == var11 && var24 != anIntArrayArray2476[11]) {
+                            var12 = 0;
+                            var11 = anIntArray2475[11];
+                            var24 = anIntArrayArray2476[11];
+                            var25 = anIntArray2478;
+                        }
+
+                        if(var12 < var11) {
+                            var15 = var25[var12];
+                        } else {
+                            var15 = -1000;
+                        }
+                    }
+
+                    var7 = anIntArray2475[var16];
+                    int[] var28 = anIntArrayArray2476[var16];
+
+                    for(var19 = 0; var19 < var7; ++var19) {
+                        this.method2903(var28[var19]);
+                    }
+                }
+
+                while(var15 != -1000) {
+                    this.method2903(var24[var12++]);
+                    if(var12 == var11 && var24 != anIntArrayArray2476[11]) {
+                        var12 = 0;
+                        var24 = anIntArrayArray2476[11];
+                        var11 = anIntArray2475[11];
+                        var25 = anIntArray2478;
+                    }
+
+                    if(var12 < var11) {
+                        var15 = var25[var12];
+                    } else {
+                        var15 = -1000;
+                    }
+                }
+
+            }
+        }
+    }
+
+    final boolean method2873(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+        return var2 < var3 && var2 < var4 && var2 < var5?false:(var2 > var3 && var2 > var4 && var2 > var5?false:(var1 < var6 && var1 < var7 && var1 < var8?false:var1 <= var6 || var1 <= var7 || var1 <= var8));
+    }
+
+    public ModelRasterizer(ModelRasterizer[] var1, int var2) {
+        boolean var4 = false;
+        boolean var3 = false;
+        boolean var5 = false;
+        boolean var6 = false;
+        this.vertexCoordinateCount = 0;
+        this.triangleFaceCount = 0;
+        this.anInt2434 = 0;
+        this.aByte2450 = -1;
+
+        ModelRasterizer var7;
+        int var9;
+        for(var9 = 0; var9 < var2; ++var9) {
+            var7 = var1[var9];
+            if(var7 != null) {
+                this.vertexCoordinateCount += var7.vertexCoordinateCount;
+                this.triangleFaceCount += var7.triangleFaceCount;
+                this.anInt2434 += var7.anInt2434;
+                if(var7.faceRenderPriorities != null) {
+                    var4 = true;
+                } else {
+                    if(this.aByte2450 == -1) {
+                        this.aByte2450 = var7.aByte2450;
+                    }
+
+                    if(this.aByte2450 != var7.aByte2450) {
+                        var4 = true;
+                    }
+                }
+
+                var3 |= var7.triangleAlphaValues != null;
+                var5 |= var7.vertexTextures != null;
+                var6 |= var7.aByteArray2451 != null;
+            }
+        }
+
+        this.vertexXCoordinate = new int[this.vertexCoordinateCount];
+        this.vertexYCoordinate = new int[this.vertexCoordinateCount];
+        this.vertexZCoordinate = new int[this.vertexCoordinateCount];
+        this.trianglePointsX = new int[this.triangleFaceCount];
+        this.trianglePointsY = new int[this.triangleFaceCount];
+        this.trianglePointsZ = new int[this.triangleFaceCount];
+        this.anIntArray2445 = new int[this.triangleFaceCount];
+        this.anIntArray2444 = new int[this.triangleFaceCount];
+        this.anIntArray2489 = new int[this.triangleFaceCount];
+        if(var4) {
+            this.faceRenderPriorities = new byte[this.triangleFaceCount];
+        }
+
+        if(var3) {
+            this.triangleAlphaValues = new byte[this.triangleFaceCount];
+        }
+
+        if(var5) {
+            this.vertexTextures = new short[this.triangleFaceCount];
+        }
+
+        if(var6) {
+            this.aByteArray2451 = new byte[this.triangleFaceCount];
+        }
+
+        if(this.anInt2434 > 0) {
+            this.anIntArray2462 = new int[this.anInt2434];
+            this.anIntArray2453 = new int[this.anInt2434];
+            this.anIntArray2454 = new int[this.anInt2434];
+        }
+
+        this.vertexCoordinateCount = 0;
+        this.triangleFaceCount = 0;
+        this.anInt2434 = 0;
+
+        for(var9 = 0; var9 < var2; ++var9) {
+            var7 = var1[var9];
+            if(var7 != null) {
+                int var8;
+                for(var8 = 0; var8 < var7.triangleFaceCount; ++var8) {
+                    this.trianglePointsX[this.triangleFaceCount] = var7.trianglePointsX[var8] + this.vertexCoordinateCount;
+                    this.trianglePointsY[this.triangleFaceCount] = var7.trianglePointsY[var8] + this.vertexCoordinateCount;
+                    this.trianglePointsZ[this.triangleFaceCount] = var7.trianglePointsZ[var8] + this.vertexCoordinateCount;
+                    this.anIntArray2445[this.triangleFaceCount] = var7.anIntArray2445[var8];
+                    this.anIntArray2444[this.triangleFaceCount] = var7.anIntArray2444[var8];
+                    this.anIntArray2489[this.triangleFaceCount] = var7.anIntArray2489[var8];
+                    if(var4) {
+                        if(var7.faceRenderPriorities != null) {
+                            this.faceRenderPriorities[this.triangleFaceCount] = var7.faceRenderPriorities[var8];
+                        } else {
+                            this.faceRenderPriorities[this.triangleFaceCount] = var7.aByte2450;
+                        }
+                    }
+
+                    if(var3 && var7.triangleAlphaValues != null) {
+                        this.triangleAlphaValues[this.triangleFaceCount] = var7.triangleAlphaValues[var8];
+                    }
+
+                    if(var5) {
+                        if(var7.vertexTextures != null) {
+                            this.vertexTextures[this.triangleFaceCount] = var7.vertexTextures[var8];
+                        } else {
+                            this.vertexTextures[this.triangleFaceCount] = -1;
+                        }
+                    }
+
+                    if(var6) {
+                        if(var7.aByteArray2451 != null && var7.aByteArray2451[var8] != -1) {
+                            this.aByteArray2451[this.triangleFaceCount] = (byte)(var7.aByteArray2451[var8] + this.anInt2434);
+                        } else {
+                            this.aByteArray2451[this.triangleFaceCount] = -1;
+                        }
+                    }
+
+                    ++this.triangleFaceCount;
+                }
+
+                for(var8 = 0; var8 < var7.anInt2434; ++var8) {
+                    this.anIntArray2462[this.anInt2434] = var7.anIntArray2462[var8] + this.vertexCoordinateCount;
+                    this.anIntArray2453[this.anInt2434] = var7.anIntArray2453[var8] + this.vertexCoordinateCount;
+                    this.anIntArray2454[this.anInt2434] = var7.anIntArray2454[var8] + this.vertexCoordinateCount;
+                    ++this.anInt2434;
+                }
+
+                for(var8 = 0; var8 < var7.vertexCoordinateCount; ++var8) {
+                    this.vertexXCoordinate[this.vertexCoordinateCount] = var7.vertexXCoordinate[var8];
+                    this.vertexYCoordinate[this.vertexCoordinateCount] = var7.vertexYCoordinate[var8];
+                    this.vertexZCoordinate[this.vertexCoordinateCount] = var7.vertexZCoordinate[var8];
+                    ++this.vertexCoordinateCount;
+                }
+            }
+        }
+
+    }
+
+    public ModelRasterizer method2890(int[][] var1, int var2, int var3, int var4, boolean var5, int var6) {
+        this.method2855();
+        int var17 = var2 - this.anInt2460;
+        int var8 = var2 + this.anInt2460;
+        int var7 = var4 - this.anInt2460;
+        int var16 = var4 + this.anInt2460;
+        if(var17 >= 0 && var8 + 128 >> 7 < var1.length && var7 >= 0 && var16 + 128 >> 7 < var1[0].length) {
+            var17 >>= 7;
+            var8 = var8 + 127 >> 7;
+            var7 >>= 7;
+            var16 = var16 + 127 >> 7;
+            if(var1[var17][var7] == var3 && var1[var8][var7] == var3 && var1[var17][var16] == var3 && var1[var8][var16] == var3) {
+                return this;
+            } else {
+                ModelRasterizer var9;
+                if(var5) {
+                    var9 = new ModelRasterizer();
+                    var9.vertexCoordinateCount = this.vertexCoordinateCount;
+                    var9.triangleFaceCount = this.triangleFaceCount;
+                    var9.anInt2434 = this.anInt2434;
+                    var9.vertexXCoordinate = this.vertexXCoordinate;
+                    var9.vertexZCoordinate = this.vertexZCoordinate;
+                    var9.trianglePointsX = this.trianglePointsX;
+                    var9.trianglePointsY = this.trianglePointsY;
+                    var9.trianglePointsZ = this.trianglePointsZ;
+                    var9.anIntArray2445 = this.anIntArray2445;
+                    var9.anIntArray2444 = this.anIntArray2444;
+                    var9.anIntArray2489 = this.anIntArray2489;
+                    var9.faceRenderPriorities = this.faceRenderPriorities;
+                    var9.triangleAlphaValues = this.triangleAlphaValues;
+                    var9.aByteArray2451 = this.aByteArray2451;
+                    var9.vertexTextures = this.vertexTextures;
+                    var9.aByte2450 = this.aByte2450;
+                    var9.anIntArray2462 = this.anIntArray2462;
+                    var9.anIntArray2453 = this.anIntArray2453;
+                    var9.anIntArray2454 = this.anIntArray2454;
+                    var9.anIntArrayArray2439 = this.anIntArrayArray2439;
+                    var9.anIntArrayArray2456 = this.anIntArrayArray2456;
+                    var9.aBool2457 = this.aBool2457;
+                    var9.vertexYCoordinate = new int[var9.vertexCoordinateCount];
+                } else {
+                    var9 = this;
+                }
+
+                int var10;
+                int var11;
+                int var12;
+                int var13;
+                int var14;
+                int var15;
+                int var18;
+                int var19;
+                int var20;
+                int var21;
+                if(var6 == 0) {
+                    for(var19 = 0; var19 < var9.vertexCoordinateCount; ++var19) {
+                        var20 = this.vertexXCoordinate[var19] + var2;
+                        var18 = this.vertexZCoordinate[var19] + var4;
+                        var12 = var20 & 127;
+                        var15 = var18 & 127;
+                        var10 = var20 >> 7;
+                        var11 = var18 >> 7;
+                        var14 = var1[var10][var11] * (128 - var12) + var1[var10 + 1][var11] * var12 >> 7;
+                        var13 = var1[var10][var11 + 1] * (128 - var12) + var1[var10 + 1][var11 + 1] * var12 >> 7;
+                        var21 = var14 * (128 - var15) + var13 * var15 >> 7;
+                        var9.vertexYCoordinate[var19] = this.vertexYCoordinate[var19] + var21 - var3;
+                    }
+                } else {
+                    for(var19 = 0; var19 < var9.vertexCoordinateCount; ++var19) {
+                        var20 = (-this.vertexYCoordinate[var19] << 16) / (this.modelHeight);
+                        if(var20 < var6) {
+                            var18 = this.vertexXCoordinate[var19] + var2;
+                            var12 = this.vertexZCoordinate[var19] + var4;
+                            var15 = var18 & 127;
+                            var10 = var12 & 127;
+                            var11 = var18 >> 7;
+                            var14 = var12 >> 7;
+                            var13 = var1[var11][var14] * (128 - var15) + var1[var11 + 1][var14] * var15 >> 7;
+                            var21 = var1[var11][var14 + 1] * (128 - var15) + var1[var11 + 1][var14 + 1] * var15 >> 7;
+                            int var22 = var13 * (128 - var10) + var21 * var10 >> 7;
+                            var9.vertexYCoordinate[var19] = this.vertexYCoordinate[var19] + (var22 - var3) * (var6 - var20) / var6;
+                        }
+                    }
+                }
+
+                var9.anInt2466 = 0;
+                return var9;
+            }
+        } else {
+            return this;
+        }
+    }
+
+    ModelRasterizer() {}
+
+    void renderAtPoint(int var1, int yawSineDelta, int yawCosineDelta, int pitchSineDelta, int pitchCosineDelta, int xCameraDistance, int yCameraDistance, int zCameraDistance, int var9) {
+        anIntArray2474[0] = -1;
+        if(this.anInt2466 != 1) {
+            this.method2855();
+        }
+
+        int var10 = zCameraDistance * pitchCosineDelta - xCameraDistance * pitchSineDelta >> 16;
+        int var11 = yCameraDistance * yawSineDelta + var10 * yawCosineDelta >> 16;
+        int var12 = this.anInt2460 * yawCosineDelta >> 16;
+        int var13 = var11 + var12;
+        if(var13 > 50) {
+            if(var11 < 3500) {
+                int var14 = zCameraDistance * pitchSineDelta + xCameraDistance * pitchCosineDelta >> 16;
+                int var15 = var14 - this.anInt2460 << 9;
+                if(var15 / var13 < Rasterizer3D.anInt2513) {
+                    int var16 = var14 + this.anInt2460 << 9;
+                    if(var16 / var13 > Rasterizer3D.anInt2519) {
+                        int var17 = yCameraDistance * yawCosineDelta - var10 * yawSineDelta >> 16;
+                        int var18 = this.anInt2460 * yawSineDelta >> 16;
+                        int var19 = var17 + var18 << 9;
+                        if(var19 / var13 > Rasterizer3D.anInt2514) {
+                            int var20 = var18 + (this.modelHeight * yawCosineDelta >> 16);
+                            int var21 = var17 - var20 << 9;
+                            if(var21 / var13 < Rasterizer3D.anInt2521) {
+                                int var22 = var12 + (this.modelHeight * yawSineDelta >> 16);
+                                boolean var23 = false;
+                                boolean var24 = false;
+                                if(var11 - var22 <= 50) {
+                                    var24 = true;
+                                }
+
+                                boolean var25 = var24 || this.anInt2434 > 0;
+                                boolean var26 = false;
+                                int var27;
+                                int var28;
+                                int var29;
+                                if(var9 > 0 && aBool2486) {
+                                    var27 = var11 - var12;
+                                    if(var27 <= 50) {
+                                        var27 = 50;
+                                    }
+
+                                    if(var14 > 0) {
+                                        var15 /= var13;
+                                        var16 /= var27;
+                                    } else {
+                                        var16 /= var13;
+                                        var15 /= var27;
+                                    }
+
+                                    if(var17 > 0) {
+                                        var21 /= var13;
+                                        var19 /= var27;
+                                    } else {
+                                        var19 /= var13;
+                                        var21 /= var27;
+                                    }
+
+                                    var28 = anInt2487 - Rasterizer3D.centerX;
+                                    var29 = anInt2488 - Rasterizer3D.centerY;
+                                    if(var28 > var15 && var28 < var16 && var29 > var21 && var29 < var19) {
+                                        if(this.aBool2457) {
+                                            anIntArray2495[anInt2490++] = var9;
+                                        } else {
+                                            var26 = true;
+                                        }
+                                    }
+                                }
+
+                                var27 = Rasterizer3D.centerX;
+                                var28 = Rasterizer3D.centerY;
+                                var29 = 0;
+                                int var30 = 0;
+                                if(var1 != 0) {
+                                    var29 = SINE[var1];
+                                    var30 = COSINE[var1];
+                                }
+
+                                for(int var31 = 0; var31 < this.vertexCoordinateCount; ++var31) {
+                                    int var32 = this.vertexXCoordinate[var31];
+                                    int var33 = this.vertexYCoordinate[var31];
+                                    int var34 = this.vertexZCoordinate[var31];
+                                    int var35;
+                                    if(var1 != 0) {
+                                        var35 = var34 * var29 + var32 * var30 >> 16;
+                                        var34 = var34 * var30 - var32 * var29 >> 16;
+                                        var32 = var35;
+                                    }
+
+                                    var32 += xCameraDistance;
+                                    var33 += yCameraDistance;
+                                    var34 += zCameraDistance;
+                                    var35 = var34 * pitchSineDelta + var32 * pitchCosineDelta >> 16;
+                                    var34 = var34 * pitchCosineDelta - var32 * pitchSineDelta >> 16;
+                                    var32 = var35;
+                                    var35 = var33 * yawCosineDelta - var34 * yawSineDelta >> 16;
+                                    var34 = var33 * yawSineDelta + var34 * yawCosineDelta >> 16;
+                                    projectedVertexZ[var31] = var34 - var11;
+                                    if(var34 >= 50) {
+                                        projectedVertexX[var31] = var27 + (var32 << 9) / var34;
+                                        projectedVertexY[var31] = var28 + (var35 << 9) / var34;
+                                    } else {
+                                        projectedVertexX[var31] = -5000;
+                                        var23 = true;
+                                    }
+
+                                    if(var25) {
+                                        cameraVertexX[var31] = var32;
+                                        cameraVertexY[var31] = var35;
+                                        cameraVertexZ[var31] = var34;
+                                    }
+                                }
+
+                                try {
+                                    this.translateToScreen(var23, var26, var9);
+                                } catch (Exception var36) {
+                                    ;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    final void method2903(int var1) {
+        if(aBoolArray2465[var1]) {
+            this.method2867(var1);
+        } else {
+            int pointsX = this.trianglePointsX[var1];
+            int pointsY = this.trianglePointsY[var1];
+            int pointsZ = this.trianglePointsZ[var1];
+            Rasterizer3D.restrictEdges = aBoolArray2464[var1];
+            if(this.triangleAlphaValues == null) {
+                Rasterizer3D.alpha = 0;
+            } else {
+                Rasterizer3D.alpha = this.triangleAlphaValues[var1] & 255;
+            }
+
+            if(this.vertexTextures != null && this.vertexTextures[var1] != -1) {
+                int var5;
+                int var6;
+                int var7;
+                if(this.aByteArray2451 != null && this.aByteArray2451[var1] != -1) {
+                    int var8 = this.aByteArray2451[var1] & 255;
+                    var5 = this.anIntArray2462[var8];
+                    var6 = this.anIntArray2453[var8];
+                    var7 = this.anIntArray2454[var8];
+                } else {
+                    var5 = pointsX;
+                    var6 = pointsY;
+                    var7 = pointsZ;
+                }
+
+                if(this.anIntArray2489[var1] == -1) {
+                    Rasterizer3D.drawTexturedTriangle(projectedVertexY[pointsX], projectedVertexY[pointsY], projectedVertexY[pointsZ], projectedVertexX[pointsX], projectedVertexX[pointsY], projectedVertexX[pointsZ], this.anIntArray2445[var1], this.anIntArray2445[var1], this.anIntArray2445[var1], cameraVertexX[var5], cameraVertexX[var6], cameraVertexX[var7], cameraVertexY[var5], cameraVertexY[var6], cameraVertexY[var7], cameraVertexZ[var5], cameraVertexZ[var6], cameraVertexZ[var7], this.vertexTextures[var1]);
+                } else {
+                    Rasterizer3D.drawTexturedTriangle(projectedVertexY[pointsX], projectedVertexY[pointsY], projectedVertexY[pointsZ], projectedVertexX[pointsX], projectedVertexX[pointsY], projectedVertexX[pointsZ], this.anIntArray2445[var1], this.anIntArray2444[var1], this.anIntArray2489[var1], cameraVertexX[var5], cameraVertexX[var6], cameraVertexX[var7], cameraVertexY[var5], cameraVertexY[var6], cameraVertexY[var7], cameraVertexZ[var5], cameraVertexZ[var6], cameraVertexZ[var7], this.vertexTextures[var1]);
+                }
+            } else if(this.anIntArray2489[var1] == -1) {
+                Rasterizer3D.drawFlatTriangle(projectedVertexY[pointsX], projectedVertexY[pointsY], projectedVertexY[pointsZ], projectedVertexX[pointsX], projectedVertexX[pointsY], projectedVertexX[pointsZ], anIntArray2473[this.anIntArray2445[var1]]);
+            } else {
+                Rasterizer3D.drawShadedTriangle(projectedVertexY[pointsX], projectedVertexY[pointsY], projectedVertexY[pointsZ], projectedVertexX[pointsX], projectedVertexX[pointsY], projectedVertexX[pointsZ], this.anIntArray2445[var1], this.anIntArray2444[var1], this.anIntArray2489[var1]);
+            }
+        }
+    }
+
+    public void rotate90() {
+        for(int var1 = 0; var1 < this.vertexCoordinateCount; ++var1) {
+            int var2 = this.vertexXCoordinate[var1];
+            this.vertexXCoordinate[var1] = this.vertexZCoordinate[var1];
+            this.vertexZCoordinate[var1] = -var2;
+        }
+
+        this.anInt2466 = 0;
+    }
+
+    public ModelRasterizer method2907(boolean var1) {
+        if(!var1 && aByteArray2452.length < this.triangleFaceCount) {
+            aByteArray2452 = new byte[this.triangleFaceCount + 100];
+        }
+
+        return this.method2854(var1, aClass108_Sub20_Sub14_Sub3_2496, aByteArray2452);
+    }
+
+    public final void method2916(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+        anIntArray2474[0] = -1;
+        if(this.anInt2466 != 2 && this.anInt2466 != 1) {
+            this.method2856();
+        }
+
+        int var8 = Rasterizer3D.centerX;
+        int var9 = Rasterizer3D.centerY;
+        int var10 = SINE[var1];
+        int var11 = COSINE[var1];
+        int var12 = SINE[var2];
+        int var13 = COSINE[var2];
+        int var14 = SINE[var3];
+        int var15 = COSINE[var3];
+        int var16 = SINE[var4];
+        int var17 = COSINE[var4];
+        int var18 = var6 * var16 + var7 * var17 >> 16;
+
+        for(int var19 = 0; var19 < this.vertexCoordinateCount; ++var19) {
+            int var20 = this.vertexXCoordinate[var19];
+            int var21 = this.vertexYCoordinate[var19];
+            int var22 = this.vertexZCoordinate[var19];
+            int var23;
+            if(var3 != 0) {
+                var23 = var21 * var14 + var20 * var15 >> 16;
+                var21 = var21 * var15 - var20 * var14 >> 16;
+                var20 = var23;
+            }
+
+            if(var1 != 0) {
+                var23 = var21 * var11 - var22 * var10 >> 16;
+                var22 = var21 * var10 + var22 * var11 >> 16;
+                var21 = var23;
+            }
+
+            if(var2 != 0) {
+                var23 = var22 * var12 + var20 * var13 >> 16;
+                var22 = var22 * var13 - var20 * var12 >> 16;
+                var20 = var23;
+            }
+
+            var20 += var5;
+            var21 += var6;
+            var22 += var7;
+            var23 = var21 * var17 - var22 * var16 >> 16;
+            var22 = var21 * var16 + var22 * var17 >> 16;
+            projectedVertexZ[var19] = var22 - var18;
+            projectedVertexX[var19] = var8 + (var20 << 9) / var22; // here?
+            projectedVertexY[var19] = var9 + (var23 << 9) / var22;
+            if(this.anInt2434 > 0) {
+                cameraVertexX[var19] = var20;
+                cameraVertexY[var19] = var23;
+                cameraVertexZ[var19] = var22;
+            }
+        }
+
+        try {
+            this.translateToScreen(false, false, 0);
+        } catch (Exception var24) {
+            ;
+        }
+    }
+
+}

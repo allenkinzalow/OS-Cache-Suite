@@ -1,0 +1,1197 @@
+package com.osrs.suite.cache;
+
+import com.osrs.suite.cache.renderable.RGBSprite;
+import com.osrs.suite.cache.renderable.Rasterizer2D;
+
+import java.util.Random;
+
+/**
+ * Created by Allen Kinzalow on 3/22/2015.
+ */
+public class TypeFace extends Rasterizer2D {
+
+    static int anInt2635 = 0;
+    int[] anIntArray2636;
+    int[] characterWidths;
+    static int alpha = 256;
+    int[] anIntArray2639;
+    int[] anIntArray2640;
+    int anInt2641;
+    byte[][] characerPixels = new byte[256][];
+    public int anInt2643 = 0;
+    public static RGBSprite[] iconImageSet;
+    int[] characterHeights;
+    static int anInt2646 = -1;
+    static int anInt2647 = -1;
+    static int anInt2648 = -1;
+    static int textShadowColor = -1;
+    static int anInt2650 = 0;
+    static int textColor = 0;
+    static String[] aStringArray2652 = new String[100];
+    byte[] aByteArray2653;
+    static int anInt2654 = 0;
+    static Random aRandom2655 = new Random();
+    int anInt2656;
+
+    static String getIconTag(int iconID, int var1) {
+        return "<img=" + iconID + ">";
+    }
+
+
+    void method3086(byte[] fontData) {
+        this.anIntArray2636 = new int[256];
+        int var3;
+        if(fontData.length == 257) {
+            for(var3 = 0; var3 < this.anIntArray2636.length; ++var3) {
+                this.anIntArray2636[var3] = fontData[var3] & 255;
+            }
+
+            this.anInt2643 = fontData[256] & 255;
+        } else {
+            var3 = 0;
+
+            for(int var8 = 0; var8 < 256; ++var8) {
+                this.anIntArray2636[var8] = fontData[var3++] & 255;
+            }
+
+            int[] var14 = new int[256];
+            int[] var7 = new int[256];
+
+            int var6;
+            for(var6 = 0; var6 < 256; ++var6) {
+                var14[var6] = fontData[var3++] & 255;
+            }
+
+            for(var6 = 0; var6 < 256; ++var6) {
+                var7[var6] = fontData[var3++] & 255;
+            }
+
+            byte[][] var13 = new byte[256][];
+
+            int var2;
+            for(int var4 = 0; var4 < 256; ++var4) {
+                var13[var4] = new byte[var14[var4]];
+                byte var5 = 0;
+
+                for(var2 = 0; var2 < var13[var4].length; ++var2) {
+                    var5 += fontData[var3++];
+                    var13[var4][var2] = var5;
+                }
+            }
+
+            byte[][] var11 = new byte[256][];
+
+            int var12;
+            for(var12 = 0; var12 < 256; ++var12) {
+                var11[var12] = new byte[var14[var12]];
+                byte var10 = 0;
+
+                for(int var9 = 0; var9 < var11[var12].length; ++var9) {
+                    var10 += fontData[var3++];
+                    var11[var12][var9] = var10;
+                }
+            }
+
+            this.aByteArray2653 = new byte[65536];
+
+            for(var12 = 0; var12 < 256; ++var12) {
+                if(var12 != 32 && var12 != 160) {
+                    for(var2 = 0; var2 < 256; ++var2) {
+                        if(var2 != 32 && var2 != 160) {
+                            this.aByteArray2653[(var12 << 8) + var2] = (byte)method3087(var13, var11, var7, this.anIntArray2636, var14, var12, var2);
+                        }
+                    }
+                }
+            }
+
+            this.anInt2643 = var7[32] + var14[32];
+        }
+    }
+
+    static int method3087(byte[][] var0, byte[][] var1, int[] var2, int[] var3, int[] var4, int var5, int var6) {
+        int var7 = var2[var5];
+        int var14 = var7 + var4[var5];
+        int var9 = var2[var6];
+        int var10 = var9 + var4[var6];
+        int var11 = var7;
+        if(var9 > var7) {
+            var11 = var9;
+        }
+
+        int var13 = var14;
+        if(var10 < var14) {
+            var13 = var10;
+        }
+
+        int var8 = var3[var5];
+        if(var3[var6] < var8) {
+            var8 = var3[var6];
+        }
+
+        byte[] var16 = var1[var5];
+        byte[] var15 = var0[var6];
+        int var17 = var11 - var7;
+        int var18 = var11 - var9;
+
+        for(int var12 = var11; var12 < var13; ++var12) {
+            int var19 = var16[var17++] + var15[var18++];
+            if(var19 < var8) {
+                var8 = var19;
+            }
+        }
+
+        return -var8;
+    }
+
+    int method3088(char var1) {
+        if(var1 == 160) {
+            var1 = 32;
+        }
+
+        return this.anIntArray2636[method671(var1, -1279426300) & 255];
+    }
+
+    public int getTextWidth(String var1) {
+        if(var1 == null) {
+            return 0;
+        } else {
+            int var2 = -1;
+            int var3 = -1;
+            int var4 = 0;
+
+            for(int var5 = 0; var5 < var1.length(); ++var5) {
+                char var6 = var1.charAt(var5);
+                if(var6 == 60) {
+                    var2 = var5;
+                } else {
+                    if(var6 == 62 && var2 != -1) {
+                        String var7 = var1.substring(var2 + 1, var5);
+                        var2 = -1;
+                        if(var7.equals("lt")) {
+                            var6 = 60;
+                        } else {
+                            if(!var7.equals("gt")) {
+                                if(var7.startsWith("img=")) {
+                                    try {
+                                        int var8 = method692(var7.substring(4), 2055164932);
+                                        var4 += iconImageSet[var8].maxWidth;
+                                        var3 = -1;
+                                    } catch (Exception var9) {
+                                        ;
+                                    }
+                                }
+                                continue;
+                            }
+
+                            var6 = 62;
+                        }
+                    }
+
+                    if(var6 == 160) {
+                        var6 = 32;
+                    }
+
+                    if(var2 == -1) {
+                        var4 += this.anIntArray2636[(char)(method671(var6, -1279426300) & 255)];
+                        if(this.aByteArray2653 != null && var3 != -1) {
+                            var4 += this.aByteArray2653[(var3 << 8) + var6];
+                        }
+
+                        var3 = var6;
+                    }
+                }
+            }
+
+            return var4;
+        }
+    }
+
+    int method3090(String var1, int[] var2, String[] var3) {
+        if(var1 == null) {
+            return 0;
+        } else {
+            int var4 = 0;
+            int var5 = 0;
+            StringBuilder var6 = new StringBuilder(100);
+            int var7 = -1;
+            int var8 = 0;
+            byte var9 = 0;
+            int var10 = -1;
+            char var11 = 0;
+            int var12 = 0;
+            int var13 = var1.length();
+
+            for(int var14 = 0; var14 < var13; ++var14) {
+                char var15 = var1.charAt(var14);
+                if(var15 == 60) {
+                    var10 = var14;
+                } else {
+                    if(var15 == 62 && var10 != -1) {
+                        String var16 = var1.substring(var10 + 1, var14);
+                        var10 = -1;
+                        var6.append('<');
+                        var6.append(var16);
+                        var6.append('>');
+                        if(var16.equals("br")) {
+                            var3[var12] = var6.toString().substring(var5, var6.length());
+                            ++var12;
+                            var5 = var6.length();
+                            var4 = 0;
+                            var7 = -1;
+                            var11 = 0;
+                        } else if(var16.equals("lt")) {
+                            var4 += this.method3088('<');
+                            if(this.aByteArray2653 != null && var11 != -1) {
+                                var4 += this.aByteArray2653[(var11 << 8) + 60];
+                            }
+
+                            var11 = 60;
+                        } else if(var16.equals("gt")) {
+                            var4 += this.method3088('>');
+                            if(this.aByteArray2653 != null && var11 != -1) {
+                                var4 += this.aByteArray2653[(var11 << 8) + 62];
+                            }
+
+                            var11 = 62;
+                        } else if(var16.startsWith("img=")) {
+                            try {
+                                int var17 = method692(var16.substring(4), 1894759240);
+                                var4 += iconImageSet[var17].maxWidth;
+                                var11 = 0;
+                            } catch (Exception var18) {
+                                ;
+                            }
+                        }
+
+                        var15 = 0;
+                    }
+
+                    if(var10 == -1) {
+                        if(var15 != 0) {
+                            var6.append(var15);
+                            var4 += this.method3088(var15);
+                            if(this.aByteArray2653 != null && var11 != -1) {
+                                var4 += this.aByteArray2653[(var11 << 8) + var15];
+                            }
+
+                            var11 = var15;
+                        }
+
+                        if(var15 == 32) {
+                            var7 = var6.length();
+                            var8 = var4;
+                            var9 = 1;
+                        }
+
+                        if(var2 != null && var4 > var2[var12 < var2.length?var12:var2.length - 1] && var7 >= 0) {
+                            var3[var12] = var6.toString().substring(var5, var7 - var9);
+                            ++var12;
+                            var5 = var7;
+                            var7 = -1;
+                            var4 -= var8;
+                            var11 = 0;
+                        }
+
+                        if(var15 == 45) {
+                            var7 = var6.length();
+                            var8 = var4;
+                            var9 = 0;
+                        }
+                    }
+                }
+            }
+
+            String var19 = var6.toString();
+            if(var19.length() > var5) {
+                var3[var12++] = var19.substring(var5, var19.length());
+            }
+
+            return var12;
+        }
+    }
+
+    public int method3091(String var1, int var2) {
+        int var3 = this.method3090(var1, new int[]{var2}, aStringArray2652);
+        int maxWidth = 0;
+
+        for(int var5 = 0; var5 < var3; ++var5) {
+            int charWidth = this.getTextWidth(aStringArray2652[var5]);
+            if(charWidth > maxWidth) {
+                maxWidth = charWidth;
+            }
+        }
+
+        return maxWidth;
+    }
+
+    public int method3092(String var1, int var2) {
+        return this.method3090(var1, new int[]{var2}, aStringArray2652);
+    }
+
+    public static String appendLTGTTags(String message) {
+        int messageLength = message.length();
+        int var5 = 0;
+
+        for(int charIndex = 0; charIndex < messageLength; ++charIndex) {
+            char character = message.charAt(charIndex);
+            if(character == 60 || character == 62) {
+                var5 += 3;
+            }
+        }
+
+        StringBuilder appendedString = new StringBuilder(messageLength + var5);
+
+        for(int charIndex = 0; charIndex < messageLength; ++charIndex) {
+            char character = message.charAt(charIndex);
+            if(character == 60) {
+                appendedString.append("<lt>");
+            } else if(character == 62) {
+                appendedString.append("<gt>");
+            } else {
+                appendedString.append(character);
+            }
+        }
+
+        return appendedString.toString();
+    }
+
+    public void drawString(String message, int x, int y, int color, int shadow) {
+        if(message != null) {
+            this.setColorShadow(color, shadow);
+            this.drawBasicString(message, x, y);
+        }
+    }
+
+    public void drawString(String message, int x, int y, int color, int shadow, int alpha) {
+        if(message != null) {
+            this.setColorShadow(color, shadow);
+            this.setAlpha(alpha);
+            this.drawBasicString(message, x, y);
+        }
+    }
+
+    public void drawStringRight(String message, int x, int y, int var4, int var5) {
+        if(message != null) {
+            this.setColorShadow(var4, var5);
+            this.drawBasicString(message, x - this.getTextWidth(message), y);
+        }
+    }
+
+    public void drawStringRight(String message, int x, int y, int var4, int var5, int alpha) {
+        if(message != null) {
+            this.setColorShadow(var4, var5);
+            this.setAlpha(alpha);
+            this.drawBasicString(message, x - this.getTextWidth(message), y);
+        }
+    }
+
+    public void drawStringCenter(String message, int x, int y, int var4, int var5) {
+        if(message != null) {
+            this.setColorShadow(var4, var5);
+            this.drawBasicString(message, x - this.getTextWidth(message) / 2, y);
+        }
+    }
+
+    public int method3097(String message, int x, int y, int var4, int var5, int var6, int var7, int drawType, int var9, int var10) {
+        if(message == null) {
+            return 0;
+        } else {
+            this.setColorShadow(var6, var7);
+            if(var10 == 0) {
+                var10 = this.anInt2643;
+            }
+
+            int[] var12 = new int[]{var4};
+            if(var5 < this.anInt2656 + this.anInt2641 + var10 && var5 < var10 + var10) {
+                var12 = null;
+            }
+
+            int var11 = this.method3090(message, var12, aStringArray2652);
+            if(var9 == 3 && var11 == 1) {
+                var9 = 1;
+            }
+
+            int var13;
+            int var14;
+            if(var9 == 0) {
+                var14 = y + this.anInt2656;
+            } else if(var9 == 1) {
+                var14 = y + this.anInt2656 + (var5 - this.anInt2656 - this.anInt2641 - (var11 - 1) * var10) / 2;
+            } else if(var9 == 2) {
+                var14 = y + var5 - this.anInt2641 - (var11 - 1) * var10;
+            } else {
+                var13 = (var5 - this.anInt2656 - this.anInt2641 - (var11 - 1) * var10) / (var11 + 1);
+                if(var13 < 0) {
+                    var13 = 0;
+                }
+
+                var14 = y + this.anInt2656 + var13;
+                var10 += var13;
+            }
+
+            for(var13 = 0; var13 < var11; ++var13) {
+                if(drawType == 0) {
+                    this.drawBasicString(aStringArray2652[var13], x, var14);
+                } else if(drawType == 1) {
+                    this.drawBasicString(aStringArray2652[var13], x + (var4 - this.getTextWidth(aStringArray2652[var13])) / 2, var14);
+                } else if(drawType == 2) {
+                    this.drawBasicString(aStringArray2652[var13], x + var4 - this.getTextWidth(aStringArray2652[var13]), var14);
+                } else if(var13 == var11 - 1) {
+                    this.drawBasicString(aStringArray2652[var13], x, var14);
+                } else {
+                    this.method3116(aStringArray2652[var13], var4);
+                    this.drawBasicString(aStringArray2652[var13], x, var14);
+                    anInt2650 = 0;
+                }
+
+                var14 += var10;
+            }
+
+            return var11;
+        }
+    }
+
+    public void method3100(String var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+        if(var1 != null) {
+            this.setColorShadow(var4, var5);
+            double var9 = 7.0D - (double)var7 / 8.0D;
+            if(var9 < 0.0D) {
+                var9 = 0.0D;
+            }
+
+            int[] var8 = new int[var1.length()];
+
+            for(int var11 = 0; var11 < var1.length(); ++var11) {
+                var8[var11] = (int)(Math.sin((double)var11 / 1.5D + (double)var6 / 1.0D) * var9);
+            }
+
+            this.drawSeededString(var1, var2 - this.getTextWidth(var1) / 2, var3, (int[])null, var8);
+        }
+    }
+
+    public void drawShadedSeededAlphaString(String var1, int var2, int var3, int var4, int var5, int var6) {
+        if(var1 != null) {
+            this.setColorShadow(var4, var5);
+            aRandom2655.setSeed((long)var6);
+            alpha = 192 + (aRandom2655.nextInt() & 31);
+            int[] var8 = new int[var1.length()];
+            int var7 = 0;
+
+            for(int var9 = 0; var9 < var1.length(); ++var9) {
+                var8[var9] = var7;
+                if((aRandom2655.nextInt() & 3) == 0) {
+                    ++var7;
+                }
+            }
+
+            this.drawSeededString(var1, var2, var3, var8, (int[])null);
+        }
+    }
+
+    void method3103(String var1) {
+        try {
+            if(var1.startsWith("col=")) {
+                textColor = method1121(var1.substring(4), 16, (byte) 41);
+            } else if(var1.equals("/col")) {
+                textColor = anInt2635;
+            } else if(var1.startsWith("str=")) {
+                anInt2646 = method1121(var1.substring(4), 16, (byte) 2);
+            } else if(var1.equals("str")) {
+                anInt2646 = 8388608;
+            } else if(var1.equals("/str")) {
+                anInt2646 = -1;
+            } else if(var1.startsWith("u=")) {
+                anInt2647 = method1121(var1.substring(2), 16, (byte) 114);
+            } else if(var1.equals("u")) {
+                anInt2647 = 0;
+            } else if(var1.equals("/u")) {
+                anInt2647 = -1;
+            } else if(var1.startsWith("shad=")) {
+                textShadowColor = method1121(var1.substring(5), 16, (byte) 7);
+            } else if(var1.equals("shad")) {
+                textShadowColor = 0;
+            } else if(var1.equals("/shad")) {
+                textShadowColor = anInt2648;
+            } else if(var1.equals("br")) {
+                this.setColorShadow(anInt2635, anInt2648);
+            }
+        } catch (Exception var3) {
+            ;
+        }
+    }
+
+    static void drawCharacterPixels(int[] var0, byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+        int var9 = -(var5 >> 2);
+        var5 = -(var5 & 3);
+
+        for(int var11 = -var6; var11 < 0; ++var11) {
+            int var10;
+            for(var10 = var9; var10 < 0; ++var10) {
+                if(var1[var3++] != 0) {
+                    var0[var4++] = var2;
+                } else {
+                    ++var4;
+                }
+
+                if(var1[var3++] != 0) {
+                    var0[var4++] = var2;
+                } else {
+                    ++var4;
+                }
+
+                if(var1[var3++] != 0) {
+                    var0[var4++] = var2;
+                } else {
+                    ++var4;
+                }
+
+                if(var1[var3++] != 0) {
+                    var0[var4++] = var2;
+                } else {
+                    ++var4;
+                }
+            }
+
+            for(var10 = var5; var10 < 0; ++var10) {
+                if(var1[var3++] != 0) {
+                    var0[var4++] = var2;
+                } else {
+                    ++var4;
+                }
+            }
+
+            var4 += var7;
+            var3 += var8;
+        }
+
+    }
+
+    /**
+     * I think...
+     * @param message
+     * @param x
+     * @param y
+     * @param var4
+     * @param var5
+     */
+    void drawSeededString(String message, int x, int y, int[] var4, int[] var5) {
+        y -= this.anInt2643;
+        int var6 = -1;
+        int var7 = -1;
+        int var8 = 0;
+
+        for(int characterIndex = 0; characterIndex < message.length(); ++characterIndex) {
+            if(message.charAt(characterIndex) != 0) {
+                char character = (char)(method671(message.charAt(characterIndex), -1279426300) & 255);
+                if(character == 60) {
+                    var6 = characterIndex;
+                } else {
+                    int height;
+                    int var13;
+                    int var14;
+                    if(character == 62 && var6 != -1) {
+                        String var11 = message.substring(var6 + 1, characterIndex);
+                        var6 = -1;
+                        if(var11.equals("lt")) {
+                            character = 60;
+                        } else {
+                            if(!var11.equals("gt")) {
+                                if(var11.startsWith("img=")) {
+                                    try {
+                                        if(var4 != null) {
+                                            height = var4[var8];
+                                        } else {
+                                            height = 0;
+                                        }
+
+                                        if(var5 != null) {
+                                            var13 = var5[var8];
+                                        } else {
+                                            var13 = 0;
+                                        }
+
+                                        ++var8;
+                                        var14 = method692(var11.substring(4), 1922533226);
+                                        RGBSprite spritePalette = iconImageSet[var14];
+                                        spritePalette.drawSprite(x + height, y + this.anInt2643 - spritePalette.maxHeight + var13);
+                                        x += spritePalette.maxWidth;
+                                        var7 = -1;
+                                    } catch (Exception var16) {
+                                        ;
+                                    }
+                                } else {
+                                    this.method3103(var11);
+                                }
+                                continue;
+                            }
+
+                            character = 62;
+                        }
+                    }
+
+                    if(character == 160) {
+                        character = 32;
+                    }
+
+                    if(var6 == -1) {
+                        if(this.aByteArray2653 != null && var7 != -1) {
+                            x += this.aByteArray2653[(var7 << 8) + character];
+                        }
+
+                        int width = this.characterWidths[character];
+                        height = this.characterHeights[character];
+                        if(var4 != null) {
+                            var13 = var4[var8];
+                        } else {
+                            var13 = 0;
+                        }
+
+                        if(var5 != null) {
+                            var14 = var5[var8];
+                        } else {
+                            var14 = 0;
+                        }
+
+                        ++var8;
+                        if(character != 32) {
+                            if(alpha == 256) {
+                                if(textShadowColor != -1) {
+                                    drawCharacter(this.characerPixels[character], x + this.anIntArray2639[character] + 1 + var13, y + this.anIntArray2640[character] + 1 + var14, width, height, textShadowColor);
+                                }
+
+                                this.method3136(this.characerPixels[character], x + this.anIntArray2639[character] + var13, y + this.anIntArray2640[character] + var14, width, height, textColor);
+                            } else {
+                                if(textShadowColor != -1) {
+                                    drawAlphaCharacter(this.characerPixels[character], x + this.anIntArray2639[character] + 1 + var13, y + this.anIntArray2640[character] + 1 + var14, width, height, textShadowColor, alpha);
+                                }
+
+                                this.method3108(this.characerPixels[character], x + this.anIntArray2639[character] + var13, y + this.anIntArray2640[character] + var14, width, height, textColor, alpha);
+                            }
+                        } else if(anInt2650 > 0) {
+                            anInt2654 += anInt2650;
+                            x += anInt2654 >> 8;
+                            anInt2654 &= 255;
+                        }
+
+                        int var15 = this.anIntArray2636[character];
+                        if(anInt2646 != -1) {
+                            drawHorizontalLine(x, y + (int) ((double) this.anInt2643 * 0.7D), var15, anInt2646);
+                        }
+
+                        if(anInt2647 != -1) {
+                            drawHorizontalLine(x, y + this.anInt2643, var15, anInt2647);
+                        }
+
+                        x += var15;
+                        var7 = character;
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void method3107(String var1, int var2, int var3, int var4, int var5, int var6) {
+        if(var1 != null) {
+            this.setColorShadow(var4, var5);
+            int[] var8 = new int[var1.length()];
+
+            for(int var7 = 0; var7 < var1.length(); ++var7) {
+                var8[var7] = (int)(Math.sin((double)var7 / 2.0D + (double)var6 / 5.0D) * 5.0D);
+            }
+
+            this.drawSeededString(var1, var2 - this.getTextWidth(var1) / 2, var3, (int[])null, var8);
+        }
+    }
+
+    final void method3108(byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+        int var8 = var2 + var3 * renderWidth;
+        int var11 = renderWidth - var4;
+        int var12 = 0;
+        int var10 = 0;
+        int var9;
+        if(var3 < topY) {
+            var9 = topY - var3;
+            var5 -= var9;
+            var3 = topY;
+            var10 += var9 * var4;
+            var8 += var9 * renderWidth;
+        }
+
+        if(var3 + var5 > bottomY) {
+            var5 -= var3 + var5 - bottomY;
+        }
+
+        if(var2 < topX) {
+            var9 = topX - var2;
+            var4 -= var9;
+            var2 = topX;
+            var10 += var9;
+            var8 += var9;
+            var12 += var9;
+            var11 += var9;
+        }
+
+        if(var2 + var4 > bottomX) {
+            var9 = var2 + var4 - bottomX;
+            var4 -= var9;
+            var12 += var9;
+            var11 += var9;
+        }
+
+        if(var4 > 0) {
+            if(var5 > 0) {
+                drawCharacterPixelsAlpha(renderPixels, var1, var6, var10, var8, var4, var5, var11, var12, var7);
+            }
+        }
+    }
+
+    static void drawCharacter(byte[] var0, int var1, int var2, int var3, int var4, int var5) {
+        int var6 = var1 + var2 * renderWidth;
+        int var10 = renderWidth - var3;
+        int var8 = 0;
+        int var7 = 0;
+        int var9;
+        if(var2 < topY) {
+            var9 = topY - var2;
+            var4 -= var9;
+            var2 = topY;
+            var7 += var9 * var3;
+            var6 += var9 * renderWidth;
+        }
+
+        if(var2 + var4 > bottomY) {
+            var4 -= var2 + var4 - bottomY;
+        }
+
+        if(var1 < topX) {
+            var9 = topX - var1;
+            var3 -= var9;
+            var1 = topX;
+            var7 += var9;
+            var6 += var9;
+            var8 += var9;
+            var10 += var9;
+        }
+
+        if(var1 + var3 > bottomX) {
+            var9 = var1 + var3 - bottomX;
+            var3 -= var9;
+            var8 += var9;
+            var10 += var9;
+        }
+
+        if(var3 > 0) {
+            if(var4 > 0) {
+                drawCharacterPixels(renderPixels, var0, var5, var7, var6, var3, var4, var10, var8);
+            }
+        }
+    }
+
+    void setColorShadow(int var1, int colorSet) {
+        anInt2646 = -1;
+        anInt2647 = -1;
+        anInt2648 = colorSet;
+        textShadowColor = colorSet;
+        anInt2635 = var1;
+        textColor = var1;
+        alpha = 256;
+        anInt2650 = 0;
+        anInt2654 = 0;
+    }
+
+    void setAlpha(int alpha) {
+        this.alpha = alpha;
+    }
+
+    void method3116(String var1, int var2) {
+        int var3 = 0;
+        boolean var5 = false;
+
+        for(int var6 = 0; var6 < var1.length(); ++var6) {
+            char var4 = var1.charAt(var6);
+            if(var4 == 60) {
+                var5 = true;
+            } else if(var4 == 62) {
+                var5 = false;
+            } else if(!var5 && var4 == 32) {
+                ++var3;
+            }
+        }
+
+        if(var3 > 0) {
+            anInt2650 = (var2 - this.getTextWidth(var1) << 8) / var3;
+        }
+    }
+
+    TypeFace(byte[] var1) {
+        this.method3086(var1);
+    }
+
+    public void method3131(String var1, int var2, int var3, int var4, int var5, int var6) {
+        if(var1 != null) {
+            this.setColorShadow(var4, var5);
+            int[] var7 = new int[var1.length()];
+            int[] var9 = new int[var1.length()];
+
+            for(int var8 = 0; var8 < var1.length(); ++var8) {
+                var7[var8] = (int)(Math.sin((double)var8 / 5.0D + (double)var6 / 5.0D) * 5.0D);
+                var9[var8] = (int)(Math.sin((double)var8 / 3.0D + (double)var6 / 5.0D) * 5.0D);
+            }
+
+            this.drawSeededString(var1, var2 - this.getTextWidth(var1) / 2, var3, var7, var9);
+        }
+    }
+
+    TypeFace(byte[] var1, int[] var2, int[] var3, int[] characterWidths, int[] characterHeights, int[] var6, byte[][] characterPixels) {
+        this.anIntArray2639 = var2;
+        this.anIntArray2640 = var3;
+        this.characterWidths = characterWidths;
+        this.characterHeights = characterHeights;
+        this.method3086(var1);
+        this.characerPixels = characterPixels;
+        int var10 = Integer.MAX_VALUE;
+        int var9 = Integer.MIN_VALUE;
+
+        for(int var8 = 0; var8 < 256; ++var8) {
+            if(this.anIntArray2640[var8] < var10 && this.characterHeights[var8] != 0) {
+                var10 = this.anIntArray2640[var8];
+            }
+
+            if(this.anIntArray2640[var8] + this.characterHeights[var8] > var9) {
+                var9 = this.anIntArray2640[var8] + this.characterHeights[var8];
+            }
+        }
+
+        this.anInt2656 = this.anInt2643 - var10;
+        this.anInt2641 = var9 - this.anInt2643;
+    }
+
+    final void method3136(byte[] var1, int var2, int var3, int var4, int var5, int var6) {
+        int var7 = var2 + var3 * renderWidth;
+        int var11 = renderWidth - var4;
+        int var8 = 0;
+        int var9 = 0;
+        int var10;
+        if(var3 < topY) {
+            var10 = topY - var3;
+            var5 -= var10;
+            var3 = topY;
+            var9 += var10 * var4;
+            var7 += var10 * renderWidth;
+        }
+
+        if(var3 + var5 > bottomY) {
+            var5 -= var3 + var5 - bottomY;
+        }
+
+        if(var2 < topX) {
+            var10 = topX - var2;
+            var4 -= var10;
+            var2 = topX;
+            var9 += var10;
+            var7 += var10;
+            var8 += var10;
+            var11 += var10;
+        }
+
+        if(var2 + var4 > bottomX) {
+            var10 = var2 + var4 - bottomX;
+            var4 -= var10;
+            var8 += var10;
+            var11 += var10;
+        }
+
+        if(var4 > 0) {
+            if(var5 > 0) {
+                drawCharacterPixels(renderPixels, var1, var6, var9, var7, var4, var5, var11, var8);
+            }
+        }
+    }
+
+    static void drawCharacterPixelsAlpha(int[] rasterizerPixels, byte[] characterPixels, int color, int characterPixel, int rasterizerPixel, int width, int height, int rasterizerPixelOffset, int var8, int alpha) {
+        color = ((color & 16711935) * alpha & -16711936) + ((color & '\uff00') * alpha & 16711680) >> 8;
+        alpha = 256 - alpha;
+
+        for(int heightCounter = -height; heightCounter < 0; ++heightCounter) {
+            for(int widthCounter = -width; widthCounter < 0; ++widthCounter) {
+                if(characterPixels[characterPixel++] != 0) {
+                    int rasterizerPixelColor = rasterizerPixels[rasterizerPixel];
+                    rasterizerPixels[rasterizerPixel++] = (((rasterizerPixelColor & 16711935) * alpha & -16711936) + ((rasterizerPixelColor & '\uff00') * alpha & 16711680) >> 8) + color;
+                } else {
+                    ++rasterizerPixel;
+                }
+            }
+
+            rasterizerPixel += rasterizerPixelOffset;
+            characterPixel += var8;
+        }
+
+    }
+
+    void drawBasicString(String message, int x, int y) {
+        y -= this.anInt2643;
+        int var4 = -1;
+        int var5 = -1;
+
+        for(int characterIndex = 0; characterIndex < message.length(); ++characterIndex) {
+            if(message.charAt(characterIndex) != 0) {
+                char character = (char)(method671(message.charAt(characterIndex), -1279426300) & 255);
+                if(character == 60) {
+                    var4 = characterIndex;
+                } else {
+                    int var9;
+                    if(character == 62 && var4 != -1) {
+                        String var8 = message.substring(var4 + 1, characterIndex);
+                        var4 = -1;
+                        if(var8.equals("lt")) {
+                            character = 60;
+                        } else {
+                            if(!var8.equals("gt")) {
+                                if(var8.startsWith("img=")) {
+                                    try {
+                                        var9 = method692(var8.substring(4), 1972669162);
+                                        RGBSprite icon = iconImageSet[var9];
+                                        icon.drawSprite(x, y + this.anInt2643 - icon.maxHeight);
+                                        x += icon.maxWidth;
+                                        var5 = -1;
+                                    } catch (Exception var11) {
+                                        ;
+                                    }
+                                } else {
+                                    this.method3103(var8);
+                                }
+                                continue;
+                            }
+
+                            character = 62;
+                        }
+                    }
+
+                    if(character == 160) {
+                        character = 32;
+                    }
+
+                    if(var4 == -1) {
+                        if(this.aByteArray2653 != null && var5 != -1) {
+                            x += this.aByteArray2653[(var5 << 8) + character];
+                        }
+
+                        int var12 = this.characterWidths[character];
+                        var9 = this.characterHeights[character];
+                        if(character != 32) {
+                            if(alpha == 256) {
+                                if(textShadowColor != -1) {
+                                    drawCharacter(this.characerPixels[character], x + this.anIntArray2639[character] + 1, y + this.anIntArray2640[character] + 1, var12, var9, textShadowColor);
+                                }
+
+                                this.method3136(this.characerPixels[character], x + this.anIntArray2639[character], y + this.anIntArray2640[character], var12, var9, textColor);
+                            } else {
+                                if(textShadowColor != -1) {
+                                    drawAlphaCharacter(this.characerPixels[character], x + this.anIntArray2639[character] + 1, y + this.anIntArray2640[character] + 1, var12, var9, textShadowColor, alpha);
+                                }
+
+                                this.method3108(this.characerPixels[character], x + this.anIntArray2639[character], y + this.anIntArray2640[character], var12, var9, textColor, alpha);
+                            }
+                        } else if(anInt2650 > 0) {
+                            anInt2654 += anInt2650;
+                            x += anInt2654 >> 8;
+                            anInt2654 &= 255;
+                        }
+
+                        int var10 = this.anIntArray2636[character];
+                        if(anInt2646 != -1) {
+                            drawHorizontalLine(x, y + (int) ((double) this.anInt2643 * 0.7D), var10, anInt2646);
+                        }
+
+                        if(anInt2647 != -1) {
+                            drawHorizontalLine(x, y + this.anInt2643 + 1, var10, anInt2647);
+                        }
+
+                        x += var10;
+                        var5 = character;
+                    }
+                }
+            }
+        }
+
+    }
+
+    static void drawAlphaCharacter(byte[] characterPixels, int x, int y, int width, int height, int color, int alpha) {
+        int rasterizerPixel = x + y * Rasterizer2D.renderWidth;
+        int rasterizerPixelOffset = Rasterizer2D.renderWidth - width;
+        int characterPixelOffset = 0;
+        int characterPixel = 0;
+        int offset;
+        if(y < topY) {
+            offset = topY - y;
+            height -= offset;
+            y = topY;
+            characterPixel += offset * width;
+            rasterizerPixel += offset * Rasterizer2D.renderWidth;
+        }
+
+        if(y + height > bottomY) {
+            height -= y + height - bottomY;
+        }
+
+        if(x < topX) {
+            offset = topX - x;
+            width -= offset;
+            x = topX;
+            characterPixel += offset;
+            rasterizerPixel += offset;
+            characterPixelOffset += offset;
+            rasterizerPixelOffset += offset;
+        }
+
+        if(x + width > bottomX) {
+            offset = x + width - bottomX;
+            width -= offset;
+            characterPixelOffset += offset;
+            rasterizerPixelOffset += offset;
+        }
+
+        if(width > 0) {
+            if(height > 0) {
+                drawCharacterPixelsAlpha(renderPixels, characterPixels, color, characterPixel, rasterizerPixel, width, height, rasterizerPixelOffset, characterPixelOffset, alpha);
+            }
+        }
+    }
+
+    public static byte method671(char var0, int var1) {
+        byte var2;
+        if((var0 <= 0 || var0 >= 128) && (var0 < 160 || var0 > 255)) {
+            if(8364 == var0) {
+                var2 = -128;
+            } else if(var0 == 8218) {
+                var2 = -126;
+            } else if(402 == var0) {
+                var2 = -125;
+            } else if(8222 == var0) {
+                var2 = -124;
+            } else if(var0 == 8230) {
+                var2 = -123;
+            } else if(8224 == var0) {
+                var2 = -122;
+            } else if(8225 == var0) {
+                var2 = -121;
+            } else if(710 == var0) {
+                var2 = -120;
+            } else if(8240 == var0) {
+                var2 = -119;
+            } else if(var0 == 352) {
+                var2 = -118;
+            } else if(8249 == var0) {
+                var2 = -117;
+            } else if(var0 == 338) {
+                var2 = -116;
+            } else if(381 == var0) {
+                var2 = -114;
+            } else if(var0 == 8216) {
+                var2 = -111;
+            } else if(var0 == 8217) {
+                var2 = -110;
+            } else if(8220 == var0) {
+                var2 = -109;
+            } else if(var0 == 8221) {
+                var2 = -108;
+            } else if(8226 == var0) {
+                var2 = -107;
+            } else if(8211 == var0) {
+                var2 = -106;
+            } else if(8212 == var0) {
+                var2 = -105;
+            } else if(732 == var0) {
+                var2 = -104;
+            } else if(8482 == var0) {
+                var2 = -103;
+            } else if(var0 == 353) {
+                var2 = -102;
+            } else if(8250 == var0) {
+                var2 = -101;
+            } else if(339 == var0) {
+                var2 = -100;
+            } else if(var0 == 382) {
+                var2 = -98;
+            } else if(376 == var0) {
+                var2 = -97;
+            } else {
+                var2 = 63;
+            }
+        } else {
+            var2 = (byte)var0;
+        }
+
+        return var2;
+    }
+
+    public static int method692(CharSequence var0, int var1) {
+        return method579(var0, 10, true, -1333286410);
+    }
+
+    public static int method1121(CharSequence var0, int var1, byte var2) {
+        return method579(var0, var1, true, 70597305);
+    }
+
+    static int method579(CharSequence var0, int var1, boolean var2, int var3) {
+        if(var1 >= 2 && var1 <= 36) {
+            boolean var4 = false;
+            boolean var6 = false;
+            int var9 = 0;
+            int var7 = var0.length();
+
+            for(int var5 = 0; var5 < var7; ++var5) {
+                char var8 = var0.charAt(var5);
+                if(0 == var5) {
+                    if(var8 == 45) {
+                        var4 = true;
+                        continue;
+                    }
+
+                    if(43 == var8 && var2) {
+                        continue;
+                    }
+                }
+
+                int var11;
+                if(var8 >= 48 && var8 <= 57) {
+                    var11 = var8 - 48;
+                } else if(var8 >= 65 && var8 <= 90) {
+                    var11 = var8 - 55;
+                } else {
+                    if(var8 < 97 || var8 > 122) {
+                        throw new NumberFormatException();
+                    }
+
+                    var11 = var8 - 87;
+                }
+
+                if(var11 >= var1) {
+                    throw new NumberFormatException();
+                }
+
+                if(var4) {
+                    var11 = -var11;
+                }
+
+                int var10 = var11 + var9 * var1;
+                if(var10 / var1 != var9) {
+                    throw new NumberFormatException();
+                }
+
+                var9 = var10;
+                var6 = true;
+            }
+
+            if(!var6) {
+                throw new NumberFormatException();
+            } else {
+                return var9;
+            }
+        } else {
+            throw new IllegalArgumentException("");
+        }
+    }
+
+}
