@@ -25,4 +25,7 @@ Extra:<br>
 -Gamepack & params downloader<br>
 -Multiple caches may be opened at a time.<br>
 -Multiple Editors may be opened at a time.<br>
+<br><br>
+Libraries Used:<br>
+Alex's FileStore
 
