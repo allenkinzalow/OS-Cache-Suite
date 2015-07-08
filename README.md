@@ -9,7 +9,7 @@ Current Editors:
 -Mapped Values(CSMap) dumper
 
 Definitions:
--Animation Definitions
+-Animation Definitions<br>
 -Item Definitions
 -NPC Definitions
 -(Pallette)Sprite Definitions
